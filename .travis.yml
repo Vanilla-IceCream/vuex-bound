@@ -1,0 +1,15 @@
+language: node_js
+node_js: stable
+
+cache:
+  yarn: true
+  directories: node_modules
+
+script: yarn test
+
+after_success: yarn coverage
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
