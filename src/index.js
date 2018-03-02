@@ -24,14 +24,14 @@ export const mapModelsToState = (state, keys) => {
           const moduleChild = arr[1].charAt(0).toUpperCase() + arr[1].slice(1);
           this.$store.commit(`update${moduleParent}${moduleChild}`, { label: [keys[i]], value });
         }
-      }
+      },
     };
   }
 
   return obj;
 };
 
-export const updateModel = commitName => {
+export const updateModel = (commitName) => {
   const arr = commitName.split('.');
 
   if (arr.length === 1) {
@@ -40,7 +40,7 @@ export const updateModel = commitName => {
     return {
       [`update${module}`](state, { label, value }) {
         state[label] = value;
-      }
+      },
     };
   }
 
@@ -51,7 +51,7 @@ export const updateModel = commitName => {
     return {
       [`update${moduleParent}${moduleChild}`](state, { label, value }) {
         state[label] = value;
-      }
+      },
     };
   }
 };

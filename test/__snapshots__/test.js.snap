@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vuex-bound should handle mapModelsToState 1`] = `
+Object {
+  "vue": Object {
+    "get": [Function],
+    "set": [Function],
+  },
+  "vuex": Object {
+    "get": [Function],
+    "set": [Function],
+  },
+}
+`;
+
+exports[`vuex-bound should handle updateModel 1`] = `
+Object {
+  "updateFooBar": [Function],
+}
+`;

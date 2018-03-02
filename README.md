@@ -16,7 +16,7 @@ $ yarn add vuex-bound
 // constants.js
 export const INITIAL = {
   nickname: '',
-  autoplay: false
+  autoplay: false,
 };
 
 // formControls -> parent module
@@ -28,15 +28,12 @@ export const STATE_NAME = 'formControls.templateDriven';
 <template>
   <div>
     <div>
-      <md-field class="field">
-        <label>Nickname</label>
-        <md-input v-model="nickname"></md-input>
-      </md-field>
+      <v-text-field name="nickname" label="Nickname" v-model="nickname"></v-text-field>
       <div>{{ $td.nickname }}</div>
     </div>
 
     <div>
-      <md-switch v-model="autoplay" name="autoplay"></md-switch>
+      <v-switch label="Autoplay" style="width: 120px" v-model="autoplay"></v-switch>
       <div>{{ $td.autoplay }}</div>
     </div>
   </div>
@@ -54,9 +51,9 @@ export default {
     },
     ...mapModelsToState(STATE_NAME, [
       'nickname',
-      'autoplay'
-    ])
-  }
+      'autoplay',
+    ]),
+  },
 };
 </script>
 ```
@@ -69,7 +66,7 @@ import { updateModel } from 'vuex-bound';
 import { STATE_NAME } from './constants';
 
 export default {
-  ...updateModel(STATE_NAME)
+  ...updateModel(STATE_NAME),
 };
 ```
 
@@ -82,7 +79,7 @@ import mutations from './mutations';
 // child module
 const templateDriven = {
   state,
-  mutations
+  mutations,
 };
 
 export { TemplateDriven, templateDriven };
@@ -106,11 +103,11 @@ const formControls = {
   mutations,
   getters,
   modules: {
-    templateDriven
-  }
+    templateDriven,
+  },
 };
 
-export { FormControls, formControls, TemplateDriven, ReactiveForms };
+export { FormControls, formControls, TemplateDriven };
 ```
 
 ```js
@@ -134,10 +131,10 @@ export default new Vuex.Store({
   mutations,
   getters,
   modules: {
-    formControls
+    formControls,
   },
   plugins: [
-    createLogger({ collapsed: false })
-  ]
+    createLogger({ collapsed: false }),
+  ],
 });
 ```
