@@ -1,7 +1,7 @@
 {
   "name": "vuex-bound",
-  "version": "0.1.0",
-  "description": "Two-way binding for Vuex.",
+  "version": "0.1.1",
+  "description": "Vue two-way binding (v-model) for Vuex state and mutations.",
   "main": "dist/vuex-bound.cjs.js",
   "module": "dist/vuex-bound.es.js",
   "scripts": {

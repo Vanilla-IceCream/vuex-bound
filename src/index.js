@@ -1,3 +1,5 @@
+export const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+
 export const mapModelsToState = (state, keys) => {
   const obj = {};
   const arr = state.split('.');
@@ -12,17 +14,25 @@ export const mapModelsToState = (state, keys) => {
         if (arr.length === 2) {
           return this.$store.state[arr[0]][arr[1]][keys[i]];
         }
+
+        if (arr.length === 3) {
+          return this.$store.state[arr[0]][arr[1]][arr[2]][keys[i]];
+        }
       },
       set(value) {
         if (arr.length === 1) {
-          const module = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
+          const module = capitalize(arr[0]);
           this.$store.commit(`update${module}`, { label: [keys[i]], value });
         }
 
         if (arr.length === 2) {
-          const moduleParent = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
-          const moduleChild = arr[1].charAt(0).toUpperCase() + arr[1].slice(1);
+          const [moduleParent, moduleChild] = [capitalize(arr[0]), capitalize(arr[1])];
           this.$store.commit(`update${moduleParent}${moduleChild}`, { label: [keys[i]], value });
+        }
+
+        if (arr.length === 3) {
+          const [moduleParent, moduleChild, moduleSubChild] = [capitalize(arr[0]), capitalize(arr[1]), capitalize(arr[2])];
+          this.$store.commit(`update${moduleParent}${moduleChild}${moduleSubChild}`, { label: [keys[i]], value });
         }
       },
     };
@@ -35,7 +45,7 @@ export const updateModel = (commitName) => {
   const arr = commitName.split('.');
 
   if (arr.length === 1) {
-    const module = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
+    const module = capitalize(arr[0]);
 
     return {
       [`update${module}`](state, { label, value }) {
@@ -45,11 +55,20 @@ export const updateModel = (commitName) => {
   }
 
   if (arr.length === 2) {
-    const moduleParent = arr[0].charAt(0).toUpperCase() + arr[0].slice(1);
-    const moduleChild = arr[1].charAt(0).toUpperCase() + arr[1].slice(1);
+    const [moduleParent, moduleChild] = [capitalize(arr[0]), capitalize(arr[1])];
 
     return {
       [`update${moduleParent}${moduleChild}`](state, { label, value }) {
+        state[label] = value;
+      },
+    };
+  }
+
+  if (arr.length === 3) {
+    const [moduleParent, moduleChild, moduleSubChild] = [capitalize(arr[0]), capitalize(arr[1]), capitalize(arr[2])];
+
+    return {
+      [`update${moduleParent}${moduleChild}${moduleSubChild}`](state, { label, value }) {
         state[label] = value;
       },
     };

@@ -26,6 +26,23 @@ Object {
 }
 `;
 
+exports[`vuex-bound should handle mapModelsToState for sub-sub-module name 1`] = `
+Object {
+  "modelName1": Object {
+    "get": [Function],
+    "set": [Function],
+  },
+  "modelName2": Object {
+    "get": [Function],
+    "set": [Function],
+  },
+  "modelName3": Object {
+    "get": [Function],
+    "set": [Function],
+  },
+}
+`;
+
 exports[`vuex-bound should handle updateModel for module name 1`] = `
 Object {
   "updateFoo": [Function],
@@ -35,5 +52,11 @@ Object {
 exports[`vuex-bound should handle updateModel for sub-module name 1`] = `
 Object {
   "updateFooBar": [Function],
+}
+`;
+
+exports[`vuex-bound should handle updateModel for sub-module name 2`] = `
+Object {
+  "updateFooBarBaz": [Function],
 }
 `;
