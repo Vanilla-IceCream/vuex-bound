@@ -1,5 +1,9 @@
 export const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
+export const getModuleName = (state) =>
+  name =>
+    name.split('.').reduce((acc, val) => acc[val], state);
+
 export const mapModelsToState = (state, keys) => {
   const obj = {};
   const arr = state.split('.');
@@ -7,6 +11,13 @@ export const mapModelsToState = (state, keys) => {
   for (let i = 0, l = keys.length; i < l; i++) {
     obj[keys[i]] = {
       get() {
+        // TODO: reducer
+        // arr.reduce((acc, val, index) => {
+        //   if (arr.length === index + 1) {
+        //     return this.$store.state[][keys[i]];
+        //   }
+        // }, []);
+
         if (arr.length === 1) {
           return this.$store.state[arr[0]][keys[i]];
         }
