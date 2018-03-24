@@ -12,54 +12,32 @@ $ yarn add vuex-bound
 
 ## Usage
 
-Because each model must be written once.
-
-```html
-<template>
-  <div>
-    <input v-model="text1">
-    <input v-model="text2">
-  </div>
-</template>
-
-<script>
-[...]
-  computed: {
-    text1: {
-      get() {
-        return this.$store.state.obj.message;
-      },
-      set(value) {
-        this.$store.commit('updateText1', value);
-      },
-    },
-    text2: {
-      get() {
-        return this.$store.state.obj.message;
-      },
-      set(value) {
-        this.$store.commit('updateText2', value);
-      },
-    },
-  },
-[...]
-</script>
-```
-
 ```js
-[...]
-  mutations: {
-    updateText1(state, message) {
-      state.obj.message = message;
-    },
-    updateText2(state, message) {
-      state.obj.message = message;
+// store.js
+const store = new Vuex.Store({
+  state,
+  actions,
+  mutations,
+  getters,
+  modules: {
+    crud: {
+      namespaced: true,
+      modules: {
+        basic: {
+          namespaced: true,
+          state,
+          actions,
+          mutations,
+          getters,
+        },
+      },
     },
   },
-[...]
+  plugins: [
+    process.env.NODE_ENV === 'development' && createLogger({ collapsed: false }),
+  ].filter(Boolean),
+});
 ```
-
-So packaged as a utility function.
 
 ```html
 <template>
@@ -74,7 +52,7 @@ import { mapModelsToState } from 'vuex-bound';
 
 [...]
   computed: {
-    ...mapModelsToState('obj.message', [
+    ...mapModelsToState('crud.basic', [
       'text1',
       'text2',
     ]),
@@ -88,7 +66,7 @@ import { updateModel } from 'vuex-bound';
 
 [...]
   mutations: {
-    ...updateModel('obj.message'),
+    ...updateModel(),
   },
 [...]
 ```

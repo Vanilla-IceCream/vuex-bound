@@ -1,7 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var capitalize = function (str) { return str.charAt(0).toUpperCase() + str.slice(1); };
 
 // TODO: reducer
@@ -73,7 +69,5 @@ var updateModel = function () { return ({
   },
 }); };
 
-exports.capitalize = capitalize;
-exports.mapModelsToState = mapModelsToState;
-exports.updateModel = updateModel;
-//# sourceMappingURL=vuex-bound.cjs.js.map
+export { capitalize, mapModelsToState, updateModel };
+//# sourceMappingURL=vuex-bound.esm.js.map

@@ -45,18 +45,6 @@ Object {
 
 exports[`vuex-bound should handle updateModel for module name 1`] = `
 Object {
-  "updateFoo": [Function],
-}
-`;
-
-exports[`vuex-bound should handle updateModel for sub-module name 1`] = `
-Object {
-  "updateFooBar": [Function],
-}
-`;
-
-exports[`vuex-bound should handle updateModel for sub-module name 2`] = `
-Object {
-  "updateFooBarBaz": [Function],
+  "update": [Function],
 }
 `;

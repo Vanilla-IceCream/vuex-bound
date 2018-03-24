@@ -1,5 +1,7 @@
 language: node_js
-node_js: stable
+node_js:
+  - "stable"
+  - "lts/*"
 
 cache:
   yarn: true
@@ -7,9 +9,4 @@ cache:
 
 script: yarn test
 
-after_success: yarn coverage
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
+after_success: yarn run coverage
