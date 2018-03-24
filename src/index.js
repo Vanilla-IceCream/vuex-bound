@@ -1,5 +1,3 @@
-export const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
-
 // TODO: reducer
 // export const getModuleName = (state) =>
 //   name =>
@@ -33,17 +31,17 @@ export const mapModelsToState = (moduleName, keys) => {
       },
       set(value) {
         if (arr.length === 1) {
-          const module = capitalize(arr[0]);
+          const module = arr[0];
           this.$store.commit(`${module}/update`, { label: [keys[i]], value });
         }
 
         if (arr.length === 2) {
-          const [moduleParent, moduleChild] = [capitalize(arr[0]), capitalize(arr[1])];
+          const [moduleParent, moduleChild] = [arr[0], arr[1]];
           this.$store.commit(`${moduleParent}/${moduleChild}/update`, { label: [keys[i]], value });
         }
 
         if (arr.length === 3) {
-          const [moduleParent, moduleChild, moduleSubChild] = [capitalize(arr[0]), capitalize(arr[1]), capitalize(arr[2])];
+          const [moduleParent, moduleChild, moduleSubChild] = [arr[0], arr[1], arr[2]];
           this.$store.commit(`${moduleParent}/${moduleChild}/${moduleSubChild}/update`, { label: [keys[i]], value });
         }
       },

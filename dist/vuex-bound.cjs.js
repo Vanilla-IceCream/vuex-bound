@@ -2,8 +2,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var capitalize = function (str) { return str.charAt(0).toUpperCase() + str.slice(1); };
-
 // TODO: reducer
 // export const getModuleName = (state) =>
 //   name =>
@@ -37,19 +35,19 @@ var mapModelsToState = function (moduleName, keys) {
       },
       set: function set(value) {
         if (arr.length === 1) {
-          var module = capitalize(arr[0]);
+          var module = arr[0];
           this.$store.commit((module + "/update"), { label: [keys[i]], value: value });
         }
 
         if (arr.length === 2) {
-          var ref = [capitalize(arr[0]), capitalize(arr[1])];
+          var ref = [arr[0], arr[1]];
           var moduleParent = ref[0];
           var moduleChild = ref[1];
           this.$store.commit((moduleParent + "/" + moduleChild + "/update"), { label: [keys[i]], value: value });
         }
 
         if (arr.length === 3) {
-          var ref$1 = [capitalize(arr[0]), capitalize(arr[1]), capitalize(arr[2])];
+          var ref$1 = [arr[0], arr[1], arr[2]];
           var moduleParent$1 = ref$1[0];
           var moduleChild$1 = ref$1[1];
           var moduleSubChild = ref$1[2];
@@ -73,7 +71,6 @@ var updateModel = function () { return ({
   },
 }); };
 
-exports.capitalize = capitalize;
 exports.mapModelsToState = mapModelsToState;
 exports.updateModel = updateModel;
 //# sourceMappingURL=vuex-bound.cjs.js.map

@@ -1,12 +1,8 @@
-import { capitalize, mapModelsToState, updateModel } from '../src';
+import { mapModelsToState, updateModel } from '../src';
 
 process.chdir(__dirname);
 
 describe('vuex-bound', () => {
-  it('should handle capitalize', () => {
-    expect(capitalize('foo')).toBe('Foo');
-  });
-
   it('should handle mapModelsToState for module name', () => {
     const MODULE_NAME = 'foo';
     const computed = { ...mapModelsToState(MODULE_NAME, ['modelName1', 'modelName2']) };
@@ -29,7 +25,17 @@ describe('vuex-bound', () => {
   });
 
   it('should handle updateModel for module name', () => {
-    const mutations = { ...updateModel() };
-    expect(mutations).toMatchSnapshot();
+    const state = {
+      field: 'name',
+    };
+
+    const payload = {
+      label: 'field',
+      value: 'change',
+    };
+
+    updateModel().update(state, payload);
+
+    expect(state.field).toBe('change');
   });
 });
