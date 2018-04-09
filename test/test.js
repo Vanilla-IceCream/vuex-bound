@@ -10,114 +10,45 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('vuex-bound', () => {
-  let [Component, wrapper, store] = [];
+  let [template, store] = [];
+  let [Component, wrapper] = [];
 
-  it('should handle mapModelsToState for module name', () => {
-    Component = {
-      template: `
-        <div>
-          <input id="text1" v-model="text1">
-          <input id="text2" v-model="text2">
-        </div>
-      `,
-      computed: {
-        ...mapModelsToState('foo', [
-          'text1',
-          'text2',
-        ]),
-      },
-    };
+  beforeAll(() => {
+    template = `
+      <div>
+        <input id="foo" v-model="foo">
+        <input id="bar" v-model="bar">
+      </div>
+    `;
 
     store = new Vuex.Store({
+      state: {},
       modules: {
-        foo: {
+        a: {
           namespaced: true,
           state: {
-            text1: '',
-            text2: '',
+            foo: '',
+            bar: '',
           },
           mutations: {
             ...updateModel(),
           },
-        },
-      },
-    });
-
-    wrapper = shallow(Component, { localVue, store });
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should handle mapModelsToState for sub-module name', () => {
-    Component = {
-      template: `
-        <div>
-          <input id="text1" v-model="text1">
-          <input id="text2" v-model="text2">
-        </div>
-      `,
-      computed: {
-        ...mapModelsToState('foo.bar', [
-          'text1',
-          'text2',
-        ]),
-      },
-    };
-
-    store = new Vuex.Store({
-      modules: {
-        foo: {
-          namespaced: true,
           modules: {
-            bar: {
+            b: {
               namespaced: true,
               state: {
-                text1: '',
-                text2: '',
+                foo: '',
+                bar: '',
               },
               mutations: {
                 ...updateModel(),
               },
-            },
-          },
-        },
-      },
-    });
-
-    wrapper = shallow(Component, { localVue, store });
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should handle mapModelsToState for sub-sub-module name', () => {
-    Component = {
-      template: `
-        <div>
-          <input id="text1" v-model="text1">
-          <input id="text2" v-model="text2">
-        </div>
-      `,
-      computed: {
-        ...mapModelsToState('foo.bar.baz', [
-          'text1',
-          'text2',
-        ]),
-      },
-    };
-
-    store = new Vuex.Store({
-      modules: {
-        foo: {
-          namespaced: true,
-          modules: {
-            bar: {
-              namespaced: true,
               modules: {
-                baz: {
+                c: {
                   namespaced: true,
                   state: {
-                    text1: '',
-                    text2: '',
+                    foo: '',
+                    bar: '',
                   },
                   mutations: {
                     ...updateModel(),
@@ -129,10 +60,30 @@ describe('vuex-bound', () => {
         },
       },
     });
+  });
+
+  it('should handle mapModelsToState for module name', () => {
+    Component = {
+      template,
+      computed: {
+        ...mapModelsToState('a', [
+          'foo',
+          'bar',
+        ]),
+        ...mapModelsToState('a.b', [
+          'foo',
+          'bar',
+        ]),
+        ...mapModelsToState('a.b.c', [
+          'foo',
+          'bar',
+        ]),
+      },
+    };
 
     wrapper = shallow(Component, { localVue, store });
 
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper).toBeDefined();
   });
 
   it('should handle updateModel for module name', () => {

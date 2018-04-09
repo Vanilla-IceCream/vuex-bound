@@ -3,6 +3,20 @@
 //   name =>
 //     name.split('.').reduce((acc, val) => acc[val], state);
 
+// TODO: namespace
+// export const normalize = (func) => {
+//   return (namespace, map) => {
+//     if (typeof namespace !== 'string') {
+//       map = namespace;
+//       namespace = '';
+//     } else if (namespace.charAt(namespace.length - 1) !== '/') {
+//       namespace += '/';
+//     }
+//
+//     return func(namespace, map);
+//   };
+// };
+
 export const mapModelsToState = (moduleName, keys) => {
   const obj = {};
   const arr = moduleName.split('.');

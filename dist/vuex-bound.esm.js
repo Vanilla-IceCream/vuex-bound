@@ -1,8 +1,3 @@
-// TODO: reducer
-// export const getModuleName = (state) =>
-//   name =>
-//     name.split('.').reduce((acc, val) => acc[val], state);
-
 var mapModelsToState = function (moduleName, keys) {
   var obj = {};
   var arr = moduleName.split('.');
@@ -10,13 +5,6 @@ var mapModelsToState = function (moduleName, keys) {
   var loop = function ( i, l ) {
     obj[keys[i]] = {
       get: function get() {
-        // TODO: reducer
-        // arr.reduce((acc, val, index) => {
-        //   if (arr.length === index + 1) {
-        //     return this.$store.state[][keys[i]];
-        //   }
-        // }, []);
-
         if (arr.length === 1) {
           return this.$store.state[arr[0]][keys[i]];
         }
