@@ -1,6 +1,6 @@
 var mapModelsToState = function (moduleName, keys) {
   var obj = {};
-  var arr = moduleName.split('.');
+  var arr = moduleName.split('/');
 
   var loop = function ( i, l ) {
     obj[keys[i]] = {

@@ -16,28 +16,28 @@ $ yarn add vuex-bound
 import { updateModel } from 'vuex-bound';
 
 const store = new Vuex.Store({
-  state: {},
+  state: { foo: '', bar: '' },
   actions: {},
-  mutations: {},
+  mutations: { ...updateModel() },
   getters: {},
   modules: {
     a: {
       namespaced: true,
-      state: { afoo: '', abar: '' },
+      state: { foo: '', bar: '' },
       actions: {},
       mutations: { ...updateModel() },
       getters: {},
       modules: {
         b: {
           namespaced: true,
-          state: { bfoo: '', bbar: '' },
+          state: { foo: '', bar: '' },
           actions: {},
           mutations: { ...updateModel() },
           getters: {},
           modules: {
             c: {
               namespaced: true,
-              state: { cfoo: '', cbar: '' },
+              state: { foo: '', bar: '' },
               actions: {},
               mutations: { ...updateModel() },
               getters: {},
@@ -56,32 +56,56 @@ const store = new Vuex.Store({
 ```html
 <template>
   <div>
-    <div>
-      <input v-model="afoo">
-      <input v-model="abar">
-    </div>
-
-    <div>
-      <input v-model="bfoo">
-      <input v-model="bbar">
-    </div>
-
-    <div>
-      <input v-model="cfoo">
-      <input v-model="cbar">
-    </div>
+    <input v-model="foo"> {{ $b.foo }}
+    <input v-model="bar"> {{ $b.bar }}
   </div>
 </template>
 
 <script>
 import { mapModelsToState } from 'vuex-bound';
 
+// you will not need it
+// const { mapState, mapActions, mapGetters } = createNamespacedHelpers('a/b');
+
+// maybe you can do this
+// const namespace = 'a/b';
+// ...mapModelsToState(namespace, ['foo', 'bar']),
+// ...mapGetters(namespace, Object.keys(getters)),
+// ...mapActions(namespace, Object.keys(actions)),
+
+export default {
+  [...]
+  computed: {
+    // your state
+    $b: () => this.$store.state.a.b,
+    // you will not need it
+    // ...mapState({ /* ... */ })
+
+    // your models
+    ...mapModelsToState('a/b', ['foo', 'bar']),
+
+    // your getters
+    ...mapGetters('a/b', Object.keys(getters)),
+  },
+  methods: {
+    // your actions
+    ...mapActions('a/b', Object.keys(actions)),
+  },
+  [...]
+};
+</script>
+```
+
+## To Do
+
+Without namespace
+
+```js
+import { mapModelsToState } from 'vuex-bound';
+
 [...]
   computed: {
-    ...mapModelsToState('a', ['afoo', 'abar']),
-    ...mapModelsToState('a.b', ['bfoo', 'bbar']),
-    ...mapModelsToState('a.b.c', ['cfoo', 'cbar']),
+    ...mapModelsToState(['foo', 'bar']),
   },
 [...]
-</script>
 ```

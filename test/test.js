@@ -16,8 +16,20 @@ describe('vuex-bound', () => {
   beforeAll(() => {
     template = `
       <div>
-        <input id="foo" v-model="foo">
-        <input id="bar" v-model="bar">
+        <div>
+          <input v-model="afoo">
+          <input v-model="abar">
+        </div>
+
+        <div>
+          <input v-model="bfoo">
+          <input v-model="bbar">
+        </div>
+
+        <div>
+          <input v-model="cfoo">
+          <input v-model="cbar">
+        </div>
       </div>
     `;
 
@@ -26,33 +38,24 @@ describe('vuex-bound', () => {
       modules: {
         a: {
           namespaced: true,
-          state: {
-            foo: '',
-            bar: '',
-          },
-          mutations: {
-            ...updateModel(),
-          },
+          state: { afoo: '', abar: '' },
+          actions: {},
+          mutations: { ...updateModel() },
+          getters: {},
           modules: {
             b: {
               namespaced: true,
-              state: {
-                foo: '',
-                bar: '',
-              },
-              mutations: {
-                ...updateModel(),
-              },
+              state: { bfoo: '', bbar: '' },
+              actions: {},
+              mutations: { ...updateModel() },
+              getters: {},
               modules: {
                 c: {
                   namespaced: true,
-                  state: {
-                    foo: '',
-                    bar: '',
-                  },
-                  mutations: {
-                    ...updateModel(),
-                  },
+                  state: { cfoo: '', cbar: '' },
+                  actions: {},
+                  mutations: { ...updateModel() },
+                  getters: {},
                 },
               },
             },
@@ -66,18 +69,9 @@ describe('vuex-bound', () => {
     Component = {
       template,
       computed: {
-        ...mapModelsToState('a', [
-          'foo',
-          'bar',
-        ]),
-        ...mapModelsToState('a.b', [
-          'foo',
-          'bar',
-        ]),
-        ...mapModelsToState('a.b.c', [
-          'foo',
-          'bar',
-        ]),
+        ...mapModelsToState('a', ['afoo', 'abar']),
+        ...mapModelsToState('a/b', ['bfoo', 'bbar']),
+        ...mapModelsToState('a/b/c', ['cfoo', 'cbar']),
       },
     };
 

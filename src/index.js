@@ -17,9 +17,9 @@
 //   };
 // };
 
-export const mapModelsToState = (moduleName, keys) => {
+export const mapModelsToState = /*normalize*/((moduleName, keys) => {
   const obj = {};
-  const arr = moduleName.split('.');
+  const arr = moduleName.split('/');
 
   for (let i = 0, l = keys.length; i < l; i++) {
     obj[keys[i]] = {
@@ -63,7 +63,7 @@ export const mapModelsToState = (moduleName, keys) => {
   }
 
   return obj;
-};
+});
 
 export const updateModel = () => ({
   update(state, { label, value }) {
