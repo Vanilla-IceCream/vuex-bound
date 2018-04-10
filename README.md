@@ -13,22 +13,36 @@ $ yarn add vuex-bound
 ## Usage
 
 ```js
-// store.js
+import { updateModel } from 'vuex-bound';
+
 const store = new Vuex.Store({
-  state,
-  actions,
-  mutations,
-  getters,
+  state: {},
+  actions: {},
+  mutations: {},
+  getters: {},
   modules: {
-    crud: {
+    a: {
       namespaced: true,
+      state: { afoo: '', abar: '' },
+      actions: {},
+      mutations: { ...updateModel() },
+      getters: {},
       modules: {
-        basic: {
+        b: {
           namespaced: true,
-          state,
-          actions,
-          mutations,
-          getters,
+          state: { bfoo: '', bbar: '' },
+          actions: {},
+          mutations: { ...updateModel() },
+          getters: {},
+          modules: {
+            c: {
+              namespaced: true,
+              state: { cfoo: '', cbar: '' },
+              actions: {},
+              mutations: { ...updateModel() },
+              getters: {},
+            },
+          },
         },
       },
     },
@@ -42,8 +56,20 @@ const store = new Vuex.Store({
 ```html
 <template>
   <div>
-    <input v-model="text1">
-    <input v-model="text2">
+    <div>
+      <input v-model="afoo">
+      <input v-model="abar">
+    </div>
+
+    <div>
+      <input v-model="bfoo">
+      <input v-model="bbar">
+    </div>
+
+    <div>
+      <input v-model="cfoo">
+      <input v-model="cbar">
+    </div>
   </div>
 </template>
 
@@ -52,21 +78,10 @@ import { mapModelsToState } from 'vuex-bound';
 
 [...]
   computed: {
-    ...mapModelsToState('crud.basic', [
-      'text1',
-      'text2',
-    ]),
+    ...mapModelsToState('a', ['afoo', 'abar']),
+    ...mapModelsToState('a.b', ['bfoo', 'bbar']),
+    ...mapModelsToState('a.b.c', ['cfoo', 'cbar']),
   },
 [...]
 </script>
-```
-
-```js
-import { updateModel } from 'vuex-bound';
-
-[...]
-  mutations: {
-    ...updateModel(),
-  },
-[...]
 ```
