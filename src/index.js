@@ -3,22 +3,37 @@
 //   name =>
 //     name.split('.').reduce((acc, val) => acc[val], state);
 
-// TODO: namespace
-// export const normalize = (func) => {
-//   return (namespace, map) => {
-//     if (typeof namespace !== 'string') {
-//       map = namespace;
-//       namespace = '';
-//     } else if (namespace.charAt(namespace.length - 1) !== '/') {
-//       namespace += '/';
-//     }
-//
-//     return func(namespace, map);
-//   };
-// };
+export const normalize = (func) => {
+  return (namespace, map) => {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    }
 
-export const mapModelsToState = /*normalize*/((moduleName, keys) => {
+    return func(namespace, map);
+  };
+};
+
+export const mapModelsToState = normalize((moduleName, keys) => {
   const obj = {};
+
+  // global
+  if (moduleName === '') {
+    keys.forEach((key) => {
+      obj[key] = {
+        get() {
+          return this.$store.state[key];
+        },
+        set(value) {
+          this.$store.commit('update', { label: key, value });
+        },
+      };
+    });
+
+    return obj;
+  }
+
+  // namespaced
   const arr = moduleName.split('/');
 
   for (let i = 0, l = keys.length; i < l; i++) {

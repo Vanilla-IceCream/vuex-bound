@@ -12,14 +12,12 @@ $ yarn add vuex-bound
 
 ## Usage
 
+### namespaced
+
 ```js
 import { updateModel } from 'vuex-bound';
 
 const store = new Vuex.Store({
-  state: { foo: '', bar: '' },
-  actions: {},
-  mutations: { ...updateModel() },
-  getters: {},
   modules: {
     a: {
       namespaced: true,
@@ -79,7 +77,7 @@ export default {
     // your state
     $b: () => this.$store.state.a.b,
     // you will not need it
-    // ...mapState({ /* ... */ })
+    // ...mapState('a/b', ['foo', 'bar'])
 
     // your models
     ...mapModelsToState('a/b', ['foo', 'bar']),
@@ -96,16 +94,53 @@ export default {
 </script>
 ```
 
-## To Do
-
-Without namespace
+### global
 
 ```js
-import { mapModelsToState } from 'vuex-bound';
+import { updateModel } from 'vuex-bound';
 
-[...]
-  computed: {
-    ...mapModelsToState(['foo', 'bar']),
+const store = new Vuex.Store({
+  state: { foo: '', bar: '' },
+  actions: {},
+  mutations: { ...updateModel() },
+  getters: {},
+  modules: {
+    // ...
   },
-[...]
+  plugins: [
+    process.env.NODE_ENV === 'development' && createLogger({ collapsed: false }),
+  ].filter(Boolean),
+});
+```
+
+```html
+<template>
+  <div>
+    <input v-model="foo"> {{ $app.foo }}
+    <input v-model="bar"> {{ $app.bar }}
+  </div>
+</template>
+
+<script>
+export default {
+  [...]
+  computed: {
+    // your state
+    $app: () => this.$store.state,
+    // you will not need it
+    // ...mapState(['foo', 'bar'])
+
+    // your models
+    ...mapModelsToState(['foo', 'bar']),
+
+    // your getters
+    ...mapGetters(Object.keys(getters)),
+  },
+  methods: {
+    // your actions
+    ...mapActions(Object.keys(actions)),
+  },
+  [...]
+};
+</script>
 ```

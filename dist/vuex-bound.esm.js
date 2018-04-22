@@ -1,5 +1,34 @@
-var mapModelsToState = function (moduleName, keys) {
+var normalize = function (func) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    }
+
+    return func(namespace, map);
+  };
+};
+
+var mapModelsToState = normalize(function (moduleName, keys) {
   var obj = {};
+
+  // global
+  if (moduleName === '') {
+    keys.forEach(function (key) {
+      obj[key] = {
+        get: function get() {
+          return this.$store.state[key];
+        },
+        set: function set(value) {
+          this.$store.commit('update', { label: key, value: value });
+        },
+      };
+    });
+
+    return obj;
+  }
+
+  // namespaced
   var arr = moduleName.split('/');
 
   var loop = function ( i, l ) {
@@ -44,7 +73,7 @@ var mapModelsToState = function (moduleName, keys) {
   for (var i = 0, l = keys.length; i < l; i++) loop( i, l );
 
   return obj;
-};
+});
 
 var updateModel = function () { return ({
   update: function update(state, ref) {
@@ -55,5 +84,5 @@ var updateModel = function () { return ({
   },
 }); };
 
-export { mapModelsToState, updateModel };
+export { normalize, mapModelsToState, updateModel };
 //# sourceMappingURL=vuex-bound.esm.js.map
