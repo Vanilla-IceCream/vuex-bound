@@ -59,20 +59,12 @@ export const mapModelsToState = normalize((moduleName, keys) => {
         }
       },
       set(value) {
-        if (arr.length === 1) {
-          const module = arr[0];
-          this.$store.commit(`${module}/update`, { label: key, value });
-        }
-
-        if (arr.length === 2) {
-          const [moduleParent, moduleChild] = [arr[0], arr[1]];
-          this.$store.commit(`${moduleParent}/${moduleChild}/update`, { label: key, value });
-        }
-
-        if (arr.length === 3) {
-          const [moduleParent, moduleChild, moduleSubChild] = [arr[0], arr[1], arr[2]];
-          this.$store.commit(`${moduleParent}/${moduleChild}/${moduleSubChild}/update`, { label: key, value });
-        }
+        arr.forEach((item, index) => {
+          if (arr.length === index + 1) {
+            const typeName = `${arr.join('/')}/update`;
+            this.$store.commit(typeName, { label: key, value });
+          }
+        });
       },
     };
   });
