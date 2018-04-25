@@ -36,46 +36,46 @@ export const mapModelsToState = normalize((moduleName, keys) => {
   // namespaced
   const arr = moduleName.split('/');
 
-  for (let i = 0, l = keys.length; i < l; i++) {
-    obj[keys[i]] = {
+  keys.forEach((key) => {
+    obj[key] = {
       get() {
         // TODO: reducer
         // arr.reduce((acc, val, index) => {
         //   if (arr.length === index + 1) {
-        //     return this.$store.state[][keys[i]];
+        //     return this.$store.state[][key];
         //   }
         // }, []);
 
         if (arr.length === 1) {
-          return this.$store.state[arr[0]][keys[i]];
+          return this.$store.state[arr[0]][key];
         }
 
         if (arr.length === 2) {
-          return this.$store.state[arr[0]][arr[1]][keys[i]];
+          return this.$store.state[arr[0]][arr[1]][key];
         }
 
         if (arr.length === 3) {
-          return this.$store.state[arr[0]][arr[1]][arr[2]][keys[i]];
+          return this.$store.state[arr[0]][arr[1]][arr[2]][key];
         }
       },
       set(value) {
         if (arr.length === 1) {
           const module = arr[0];
-          this.$store.commit(`${module}/update`, { label: [keys[i]], value });
+          this.$store.commit(`${module}/update`, { label: key, value });
         }
 
         if (arr.length === 2) {
           const [moduleParent, moduleChild] = [arr[0], arr[1]];
-          this.$store.commit(`${moduleParent}/${moduleChild}/update`, { label: [keys[i]], value });
+          this.$store.commit(`${moduleParent}/${moduleChild}/update`, { label: key, value });
         }
 
         if (arr.length === 3) {
           const [moduleParent, moduleChild, moduleSubChild] = [arr[0], arr[1], arr[2]];
-          this.$store.commit(`${moduleParent}/${moduleChild}/${moduleSubChild}/update`, { label: [keys[i]], value });
+          this.$store.commit(`${moduleParent}/${moduleChild}/${moduleSubChild}/update`, { label: key, value });
         }
       },
     };
-  }
+  });
 
   return obj;
 });
