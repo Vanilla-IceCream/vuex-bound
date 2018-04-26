@@ -1,8 +1,3 @@
-// TODO: reducer
-// export const getModuleName = (state) =>
-//   name =>
-//     name.split('.').reduce((acc, val) => acc[val], state);
-
 export const normalize = (func) => {
   return (namespace, map) => {
     if (typeof namespace !== 'string') {
@@ -39,24 +34,15 @@ export const mapModelsToState = normalize((moduleName, keys) => {
   keys.forEach((key) => {
     obj[key] = {
       get() {
-        // TODO: reducer
-        // arr.reduce((acc, val, index) => {
-        //   if (arr.length === index + 1) {
-        //     return this.$store.state[][key];
-        //   }
-        // }, []);
+        const deep = arr.reduce((prev, cur) => {
+          if (prev && prev[cur]) {
+            return prev[cur];
+          }
 
-        if (arr.length === 1) {
-          return this.$store.state[arr[0]][key];
-        }
+          return null;
+        }, this.$store.state);
 
-        if (arr.length === 2) {
-          return this.$store.state[arr[0]][arr[1]][key];
-        }
-
-        if (arr.length === 3) {
-          return this.$store.state[arr[0]][arr[1]][arr[2]][key];
-        }
+        return deep ? deep[key] : null;
       },
       set(value) {
         arr.forEach((item, index) => {

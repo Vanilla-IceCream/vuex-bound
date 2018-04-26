@@ -31,46 +31,31 @@ var mapModelsToState = normalize(function (moduleName, keys) {
   // namespaced
   var arr = moduleName.split('/');
 
-  var loop = function ( i, l ) {
-    obj[keys[i]] = {
+  keys.forEach(function (key) {
+    obj[key] = {
       get: function get() {
-        if (arr.length === 1) {
-          return this.$store.state[arr[0]][keys[i]];
-        }
+        var deep = arr.reduce(function (prev, cur) {
+          if (prev && prev[cur]) {
+            return prev[cur];
+          }
 
-        if (arr.length === 2) {
-          return this.$store.state[arr[0]][arr[1]][keys[i]];
-        }
+          return null;
+        }, this.$store.state);
 
-        if (arr.length === 3) {
-          return this.$store.state[arr[0]][arr[1]][arr[2]][keys[i]];
-        }
+        return deep ? deep[key] : null;
       },
       set: function set(value) {
-        if (arr.length === 1) {
-          var module = arr[0];
-          this.$store.commit((module + "/update"), { label: [keys[i]], value: value });
-        }
+        var this$1 = this;
 
-        if (arr.length === 2) {
-          var ref = [arr[0], arr[1]];
-          var moduleParent = ref[0];
-          var moduleChild = ref[1];
-          this.$store.commit((moduleParent + "/" + moduleChild + "/update"), { label: [keys[i]], value: value });
-        }
-
-        if (arr.length === 3) {
-          var ref$1 = [arr[0], arr[1], arr[2]];
-          var moduleParent$1 = ref$1[0];
-          var moduleChild$1 = ref$1[1];
-          var moduleSubChild = ref$1[2];
-          this.$store.commit((moduleParent$1 + "/" + moduleChild$1 + "/" + moduleSubChild + "/update"), { label: [keys[i]], value: value });
-        }
+        arr.forEach(function (item, index) {
+          if (arr.length === index + 1) {
+            var typeName = (arr.join('/')) + "/update";
+            this$1.$store.commit(typeName, { label: key, value: value });
+          }
+        });
       },
     };
-  };
-
-  for (var i = 0, l = keys.length; i < l; i++) loop( i, l );
+  });
 
   return obj;
 });
