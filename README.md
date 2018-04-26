@@ -12,7 +12,7 @@ $ yarn add vuex-bound
 
 ## Usage
 
-### namespaced
+### modules
 
 ```js
 import { updateModel } from 'vuex-bound';

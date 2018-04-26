@@ -28,7 +28,7 @@ export const mapModelsToState = normalize((moduleName, keys) => {
     return obj;
   }
 
-  // namespaced
+  // modules
   const arr = moduleName.split('/');
 
   keys.forEach((key) => {
