@@ -34,15 +34,8 @@ export const mapModelsToState = normalize((moduleName, keys) => {
   keys.forEach((key) => {
     obj[key] = {
       get() {
-        const deep = arr.reduce((prev, cur) => {
-          if (prev && prev[cur]) {
-            return prev[cur];
-          }
-
-          return null;
-        }, this.$store.state);
-
-        return deep ? deep[key] : null;
+        const deep = arr.reduce((prev, cur) => prev[cur], this.$store.state);
+        return deep[key];
       },
       set(value) {
         arr.forEach((item, index) => {
