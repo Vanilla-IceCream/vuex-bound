@@ -38,6 +38,7 @@ describe('vuex-bound', () => {
     });
 
     const wrapper = shallow(Component, { localVue, store });
+    wrapper.setData({ foo: 'bar' });
 
     expect(wrapper).toBeDefined();
   });
@@ -58,6 +59,7 @@ describe('vuex-bound', () => {
     });
 
     const wrapper = shallow(Component, { localVue, store });
+    wrapper.setData({ foo: 'bar' });
 
     expect(wrapper).toBeDefined();
   });
