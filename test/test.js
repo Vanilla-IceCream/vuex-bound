@@ -27,10 +27,8 @@ describe('vuex-bound', () => {
           modules: {
             b: {
               namespaced: true,
-              state: { foo: '' },
-              actions: {},
+              state: { foo: 'foo' },
               mutations: { ...updateModel() },
-              getters: {},
             },
           },
         },
@@ -38,9 +36,11 @@ describe('vuex-bound', () => {
     });
 
     const wrapper = shallow(Component, { localVue, store });
-    wrapper.setData({ foo: 'bar' });
 
-    expect(wrapper).toBeDefined();
+    expect(store.state.a.b.foo).toMatch('foo');
+
+    wrapper.setData({ foo: 'bar' });
+    expect(store.state.a.b.foo).toMatch('bar');
   });
 
   it('should handle mapModelsToState for global', () => {
@@ -59,9 +59,11 @@ describe('vuex-bound', () => {
     });
 
     const wrapper = shallow(Component, { localVue, store });
-    wrapper.setData({ foo: 'bar' });
 
-    expect(wrapper).toBeDefined();
+    expect(store.state.foo).toMatch('foo');
+
+    wrapper.setData({ foo: 'bar' });
+    expect(store.state.foo).toMatch('bar');
   });
 
   it('should handle updateModel', () => {
@@ -76,6 +78,6 @@ describe('vuex-bound', () => {
 
     updateModel().update(state, payload);
 
-    expect(state.field).toBe('change');
+    expect(state.field).toMatch('change');
   });
 });

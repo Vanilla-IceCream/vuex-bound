@@ -34,16 +34,10 @@ export const mapModelsToState = normalize((moduleName, keys) => {
   keys.forEach((key) => {
     obj[key] = {
       get() {
-        const deep = arr.reduce((prev, cur) => prev[cur], this.$store.state);
-        return deep[key];
+        return arr.reduce((prev, cur) => prev[cur], this.$store.state)[key];
       },
       set(value) {
-        arr.forEach((item, index) => {
-          if (arr.length === index + 1) {
-            const typeName = `${arr.join('/')}/update`;
-            this.$store.commit(typeName, { label: key, value });
-          }
-        });
+        this.$store.commit(`${arr.join('/')}/update`, { label: key, value });
       },
     };
   });

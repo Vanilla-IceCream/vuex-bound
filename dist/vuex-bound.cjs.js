@@ -32,31 +32,16 @@ var mapModelsToState = normalize(function (moduleName, keys) {
     return obj;
   }
 
-  // namespaced
+  // modules
   var arr = moduleName.split('/');
 
   keys.forEach(function (key) {
     obj[key] = {
       get: function get() {
-        var deep = arr.reduce(function (prev, cur) {
-          if (prev && prev[cur]) {
-            return prev[cur];
-          }
-
-          return null;
-        }, this.$store.state);
-
-        return deep ? deep[key] : null;
+        return arr.reduce(function (prev, cur) { return prev[cur]; }, this.$store.state)[key];
       },
       set: function set(value) {
-        var this$1 = this;
-
-        arr.forEach(function (item, index) {
-          if (arr.length === index + 1) {
-            var typeName = (arr.join('/')) + "/update";
-            this$1.$store.commit(typeName, { label: key, value: value });
-          }
-        });
+        this.$store.commit(((arr.join('/')) + "/update"), { label: key, value: value });
       },
     };
   });
