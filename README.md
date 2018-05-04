@@ -81,6 +81,11 @@ export default {
 
     // your models
     ...mapModelsToState('a/b', ['foo', 'bar']),
+    // equal to
+    ...mapModelsToState('a/b', {
+      foo: state => state.foo,
+      bar: state => state.bar,
+    }),
 
     // your getters
     ...mapGetters('a/b', Object.keys(getters)),
@@ -132,6 +137,11 @@ export default {
 
     // your models
     ...mapModelsToState(['foo', 'bar']),
+    // equal to
+    ...mapModelsToState({
+      foo: state => state.foo,
+      bar: state => state.bar,
+    }),
 
     // your getters
     ...mapGetters(Object.keys(getters)),
@@ -147,22 +157,12 @@ export default {
 
 ## To Do
 
+### get nested state
+
 ```js
 // modules
-
-// equal to ...mapModelsToState('a/b', ['foo']),
-...mapModelsToState('a/b', { foo: state => state.foo }),
-
-// get nested state
 ...mapModelsToState('a/b', { fooBar: state => state.foo.bar }),
 
-// -
-
 // global
-
-// equal to ...mapModelsToState(['foo']),
-...mapModelsToState({ foo: state => state.foo }),
-
-// get nested state
 ...mapModelsToState({ fooBar: state => state.foo.bar }),
 ```

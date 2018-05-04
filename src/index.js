@@ -1,4 +1,10 @@
-export const normalize = (func) => {
+export const normalizeMap = (map) => {
+  return Array.isArray(map)
+    ? map.map(key => ({ key, val: key }))
+    : Object.keys(map).map(key => ({ key, val: map[key] }))
+};
+
+export const normalizeNamespace = (func) => {
   return (namespace, map) => {
     if (typeof namespace !== 'string') {
       map = namespace;
@@ -9,44 +15,43 @@ export const normalize = (func) => {
   };
 };
 
-export const mapModelsToState = normalize((moduleName, keys) => {
-  const obj = {};
+export const mapModelsToState = normalizeNamespace((namespace, models) => {
+  const res = {};
 
-  // global
-  if (moduleName === '') {
-    keys.forEach((key) => {
-      obj[key] = {
-        get() {
-          return this.$store.state[key];
-        },
-        set(value) {
-          this.$store.commit('update', { label: key, value });
-        },
-      };
-    });
-
-    return obj;
-  }
-
-  // modules
-  const arr = moduleName.split('/');
-
-  keys.forEach((key) => {
-    obj[key] = {
+  normalizeMap(models).forEach(({ key, val }) => {
+    res[key] = {
       get() {
-        return arr.reduce((prev, cur) => prev[cur], this.$store.state)[key];
+        if (!namespace) {  // global
+          if (typeof val === 'function') {  // func
+            val(this.$store.state);
+          } else {  // arr
+            return this.$store.state[key];
+          }
+        } else {  // modules
+          if (typeof val === 'function') {  // func
+            val(this.$store.state);
+          } else {  // arr
+            return namespace.split('/')
+              .reduce((prev, cur) => prev[cur], this.$store.state)[key];
+          }
+        }
       },
       set(value) {
-        this.$store.commit(`${arr.join('/')}/update`, { label: key, value });
+        if (!namespace) {  // global
+          this.$store.commit('update', { label: key, value });
+        } else {  // modules
+          this.$store.commit(`${namespace.split('/').join('/')}/update`, { label: key, value });
+        }
       },
     };
   });
 
-  return obj;
+  return res;
 });
 
 export const updateModel = () => ({
   update(state, { label, value }) {
+    // TODO: get nested state
     state[label] = value;
   },
 });

@@ -1,6 +1,6 @@
 {
   "name": "vuex-bound",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Vue two-way binding (v-model) for Vuex state and mutations.",
   "main": "dist/vuex-bound.cjs.js",
   "module": "dist/vuex-bound.esm.js",
@@ -23,17 +23,17 @@
   },
   "homepage": "https://github.com/Vanilla-IceCream/vuex-bound#readme",
   "peerDependencies": {
-    "vuex": "^3.0.1"
+    "vuex": ">= 3 < 4"
   },
   "dependencies": {},
   "devDependencies": {
-    "@vue/test-utils": "^1.0.0-beta.13",
+    "@vue/test-utils": "^1.0.0-beta.15",
+    "babel-core": "^6.26.3",
     "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
     "coveralls": "^3.0.0",
     "jest": "^22.4.3",
-    "regenerator-runtime": "^0.11.1",
     "rollup": "^0.57.1",
     "rollup-plugin-buble": "^0.19.2",
     "vue": "^2.5.16",

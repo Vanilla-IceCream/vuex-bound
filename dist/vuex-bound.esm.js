@@ -1,4 +1,10 @@
-var normalize = function (func) {
+var normalizeMap = function (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+};
+
+var normalizeNamespace = function (func) {
   return function (namespace, map) {
     if (typeof namespace !== 'string') {
       map = namespace;
@@ -9,40 +15,41 @@ var normalize = function (func) {
   };
 };
 
-var mapModelsToState = normalize(function (moduleName, keys) {
-  var obj = {};
+var mapModelsToState = normalizeNamespace(function (namespace, models) {
+  var res = {};
 
-  // global
-  if (moduleName === '') {
-    keys.forEach(function (key) {
-      obj[key] = {
-        get: function get() {
-          return this.$store.state[key];
-        },
-        set: function set(value) {
-          this.$store.commit('update', { label: key, value: value });
-        },
-      };
-    });
+  normalizeMap(models).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
 
-    return obj;
-  }
-
-  // modules
-  var arr = moduleName.split('/');
-
-  keys.forEach(function (key) {
-    obj[key] = {
+    res[key] = {
       get: function get() {
-        return arr.reduce(function (prev, cur) { return prev[cur]; }, this.$store.state)[key];
+        if (!namespace) {  // global
+          if (typeof val === 'function') {  // func
+            val(this.$store.state);
+          } else {  // arr
+            return this.$store.state[key];
+          }
+        } else {  // modules
+          if (typeof val === 'function') {  // func
+            val(this.$store.state);
+          } else {  // arr
+            return namespace.split('/')
+              .reduce(function (prev, cur) { return prev[cur]; }, this.$store.state)[key];
+          }
+        }
       },
       set: function set(value) {
-        this.$store.commit(((arr.join('/')) + "/update"), { label: key, value: value });
+        if (!namespace) {  // global
+          this.$store.commit('update', { label: key, value: value });
+        } else {  // modules
+          this.$store.commit(((namespace.split('/').join('/')) + "/update"), { label: key, value: value });
+        }
       },
     };
   });
 
-  return obj;
+  return res;
 });
 
 var updateModel = function () { return ({
@@ -50,9 +57,10 @@ var updateModel = function () { return ({
     var label = ref.label;
     var value = ref.value;
 
+    // TODO: get nested state
     state[label] = value;
   },
 }); };
 
-export { normalize, mapModelsToState, updateModel };
+export { normalizeMap, normalizeNamespace, mapModelsToState, updateModel };
 //# sourceMappingURL=vuex-bound.esm.js.map
