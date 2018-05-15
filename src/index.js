@@ -21,25 +21,25 @@ export const mapModelsToState = normalizeNamespace((namespace, models) => {
   normalizeMap(models).forEach(({ key, val }) => {
     res[key] = {
       get() {
-        if (!namespace) {  // global
-          if (typeof val === 'function') {  // func
-            val(this.$store.state);
-          } else {  // arr
+        if (!namespace) {  // for global
+          if (typeof val === 'function') {  // handle objects
+            val(this.$store.state);  // TODO: nested state
+          } else {  // handle arrays
             return this.$store.state[key];
           }
-        } else {  // modules
-          if (typeof val === 'function') {  // func
-            val(this.$store.state);
-          } else {  // arr
+        } else {  // for modules
+          if (typeof val === 'function') {  // handle objects
+            val(this.$store.state);  // TODO: nested state
+          } else {  // handle arrays
             return namespace.split('/')
               .reduce((prev, cur) => prev[cur], this.$store.state)[key];
           }
         }
       },
       set(value) {
-        if (!namespace) {  // global
+        if (!namespace) {  // for global
           this.$store.commit('update', { label: key, value });
-        } else {  // modules
+        } else {  // for modules
           this.$store.commit(`${namespace.split('/').join('/')}/update`, { label: key, value });
         }
       },
@@ -51,7 +51,6 @@ export const mapModelsToState = normalizeNamespace((namespace, models) => {
 
 export const updateModel = () => ({
   update(state, { label, value }) {
-    // TODO: get nested state
     state[label] = value;
   },
 });
