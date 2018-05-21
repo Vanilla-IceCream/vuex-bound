@@ -4,10 +4,19 @@ Vue two-way binding (v-model) for Vuex state and mutations.
 
 ## Install
 
+### CJS or ESM
+
 ```bash
 $ npm i vuex-bound -S
 # or
 $ yarn add vuex-bound
+```
+
+### UMD
+
+```js
+https://unpkg.com/vuex-bound@0.6.0/dist/vuex-bound.umd.js
+https://unpkg.com/vuex-bound@0.6.0/dist/vuex-bound.umd.min.js
 ```
 
 ## Usage
