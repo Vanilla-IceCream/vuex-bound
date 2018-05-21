@@ -12,11 +12,21 @@ $ npm i vuex-bound -S
 $ yarn add vuex-bound
 ```
 
+```js
+const { mapModelsToState, updateModel } = require('vuex-bound');
+
+import { mapModelsToState, updateModel } from 'vuex-bound';
+```
+
 ### UMD
 
-```js
+```
 https://unpkg.com/vuex-bound@0.6.0/dist/vuex-bound.umd.js
 https://unpkg.com/vuex-bound@0.6.0/dist/vuex-bound.umd.min.js
+```
+
+```js
+const { mapModelsToState, updateModel } = VuexBound;
 ```
 
 ## Usage

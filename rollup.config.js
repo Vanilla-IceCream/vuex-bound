@@ -22,7 +22,7 @@ const BABEL_CONFIG = {
 const UMD_CONFIG = {
   file: pkg.browser,
   format: 'umd',
-  name: 'vuex-bound',
+  name: 'VuexBound',
   globals: {},
 };
 
