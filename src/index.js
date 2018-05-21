@@ -38,9 +38,9 @@ export const mapModelsToState = normalizeNamespace((namespace, models) => {
       },
       set(value) {
         if (!namespace) {  // for global
-          this.$store.commit('update', { label: key, value });
+          this.$store.commit('updateModel', { label: key, value });
         } else {  // for modules
-          this.$store.commit(`${namespace.split('/').join('/')}/update`, { label: key, value });
+          this.$store.commit(`${namespace.split('/').join('/')}/updateModel`, { label: key, value });
         }
       },
     };
@@ -49,8 +49,10 @@ export const mapModelsToState = normalizeNamespace((namespace, models) => {
   return res;
 });
 
+export const mapModel = mapModelsToState;
+
 export const updateModel = () => ({
-  update(state, { label, value }) {
+  updateModel(state, { label, value }) {
     state[label] = value;
   },
 });

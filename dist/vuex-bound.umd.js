@@ -57,10 +57,10 @@
         set: function set(value) {
           if (!namespace) {
             // for global
-            this.$store.commit('update', { label: key, value: value });
+            this.$store.commit('updateModel', { label: key, value: value });
           } else {
             // for modules
-            this.$store.commit(namespace.split('/').join('/') + '/update', { label: key, value: value });
+            this.$store.commit(namespace.split('/').join('/') + '/updateModel', { label: key, value: value });
           }
         }
       };
@@ -69,9 +69,11 @@
     return res;
   });
 
+  var mapModel = mapModelsToState;
+
   var updateModel = function updateModel() {
     return {
-      update: function update(state, _ref2) {
+      updateModel: function updateModel(state, _ref2) {
         var label = _ref2.label,
             value = _ref2.value;
 
@@ -83,6 +85,7 @@
   exports.normalizeMap = normalizeMap;
   exports.normalizeNamespace = normalizeNamespace;
   exports.mapModelsToState = mapModelsToState;
+  exports.mapModel = mapModel;
   exports.updateModel = updateModel;
 
   Object.defineProperty(exports, '__esModule', { value: true });
