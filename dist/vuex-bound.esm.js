@@ -1,10 +1,12 @@
-var normalizeMap = function (map) {
-  return Array.isArray(map)
-    ? map.map(function (key) { return ({ key: key, val: key }); })
-    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+var normalizeMap = function normalizeMap(map) {
+  return Array.isArray(map) ? map.map(function (key) {
+    return { key: key, val: key };
+  }) : Object.keys(map).map(function (key) {
+    return { key: key, val: map[key] };
+  });
 };
 
-var normalizeNamespace = function (func) {
+var normalizeNamespace = function normalizeNamespace(func) {
   return function (namespace, map) {
     if (typeof namespace !== 'string') {
       map = namespace;
@@ -18,49 +20,59 @@ var normalizeNamespace = function (func) {
 var mapModelsToState = normalizeNamespace(function (namespace, models) {
   var res = {};
 
-  normalizeMap(models).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
+  normalizeMap(models).forEach(function (_ref) {
+    var key = _ref.key,
+        val = _ref.val;
 
     res[key] = {
       get: function get() {
-        if (!namespace) {  // global
-          if (typeof val === 'function') {  // func
-            val(this.$store.state);
-          } else {  // arr
+        if (!namespace) {
+          // for global
+          if (typeof val === 'function') {
+            // handle objects
+            val(this.$store.state); // TODO: nested state
+          } else {
+            // handle arrays
             return this.$store.state[key];
           }
-        } else {  // modules
-          if (typeof val === 'function') {  // func
-            val(this.$store.state);
-          } else {  // arr
-            return namespace.split('/')
-              .reduce(function (prev, cur) { return prev[cur]; }, this.$store.state)[key];
+        } else {
+          // for modules
+          if (typeof val === 'function') {
+            // handle objects
+            val(this.$store.state); // TODO: nested state
+          } else {
+            // handle arrays
+            return namespace.split('/').reduce(function (prev, cur) {
+              return prev[cur];
+            }, this.$store.state)[key];
           }
         }
       },
       set: function set(value) {
-        if (!namespace) {  // global
+        if (!namespace) {
+          // for global
           this.$store.commit('update', { label: key, value: value });
-        } else {  // modules
-          this.$store.commit(((namespace.split('/').join('/')) + "/update"), { label: key, value: value });
+        } else {
+          // for modules
+          this.$store.commit(namespace.split('/').join('/') + '/update', { label: key, value: value });
         }
-      },
+      }
     };
   });
 
   return res;
 });
 
-var updateModel = function () { return ({
-  update: function update(state, ref) {
-    var label = ref.label;
-    var value = ref.value;
+var updateModel = function updateModel() {
+  return {
+    update: function update(state, _ref2) {
+      var label = _ref2.label,
+          value = _ref2.value;
 
-    // TODO: get nested state
-    state[label] = value;
-  },
-}); };
+      state[label] = value;
+    }
+  };
+};
 
 export { normalizeMap, normalizeNamespace, mapModelsToState, updateModel };
 //# sourceMappingURL=vuex-bound.esm.js.map

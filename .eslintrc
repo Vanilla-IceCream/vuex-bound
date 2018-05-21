@@ -1,0 +1,47 @@
+{
+  "plugins": [
+    "flowtype",
+    "flowtype-errors"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true
+  },
+  "globals": {},
+  "extends": [
+    "airbnb-base",
+    "plugin:flowtype/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-plugin-root-import": {
+        "rootPathPrefix": "~",
+        "rootPathSuffix": "src"
+      }
+    }
+  },
+  "rules": {
+    // Plugins
+    "flowtype-errors/show-errors": "error",
+    "flowtype-errors/show-warnings": "warn",
+
+    // Possible Errors
+
+    // Best Practices
+
+    // Variables
+
+    // Node.js and CommonJS
+
+    // Stylistic Issues
+
+    // JS.Next
+  }
+}

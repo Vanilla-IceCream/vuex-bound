@@ -1,5 +1,5 @@
 import Vuex from 'vuex';
-import { createLocalVue, shallow } from '@vue/test-utils';
+import { createLocalVue, shallowMount } from '@vue/test-utils';
 
 import { mapModelsToState, updateModel } from '../src';
 
@@ -35,7 +35,7 @@ describe('vuex-bound', () => {
       },
     });
 
-    const wrapper = shallow(Component, { localVue, store });
+    const wrapper = shallowMount(Component, { localVue, store });
 
     expect(store.state.a.b.foo).toMatch('foo');
 
@@ -68,7 +68,7 @@ describe('vuex-bound', () => {
       },
     });
 
-    const wrapper = shallow(Component, { localVue, store });
+    const wrapper = shallowMount(Component, { localVue, store });
 
     expect(store.state.a.b.foo).toMatch('foo');
 
@@ -91,7 +91,7 @@ describe('vuex-bound', () => {
       mutations: { ...updateModel() },
     });
 
-    const wrapper = shallow(Component, { localVue, store });
+    const wrapper = shallowMount(Component, { localVue, store });
 
     expect(store.state.foo).toMatch('foo');
 
@@ -114,7 +114,7 @@ describe('vuex-bound', () => {
       mutations: { ...updateModel() },
     });
 
-    const wrapper = shallow(Component, { localVue, store });
+    const wrapper = shallowMount(Component, { localVue, store });
 
     expect(store.state.foo).toMatch('foo');
 
