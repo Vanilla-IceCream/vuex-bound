@@ -2,7 +2,7 @@
 
 Vue two-way binding (v-model) for Vuex state and mutations.
 
-## Install
+## Installation and Usage
 
 ### CJS or ESM
 
@@ -13,15 +13,20 @@ $ yarn add vuex-bound
 ```
 
 ```js
+// commonjs
 const { mapModel, updateModel } = require('vuex-bound');
 
+// es modules
 import { mapModel, updateModel } from 'vuex-bound';
 ```
 
 ### UMD
 
 ```
+// dev
 https://unpkg.com/vuex-bound@0.7.0/dist/vuex-bound.umd.js
+
+// prod
 https://unpkg.com/vuex-bound@0.7.0/dist/vuex-bound.umd.min.js
 ```
 
@@ -29,42 +34,50 @@ https://unpkg.com/vuex-bound@0.7.0/dist/vuex-bound.umd.min.js
 const { mapModel, updateModel } = VuexBound;
 ```
 
-## Usage
+## Getting Started
 
 ### Global
 
 ```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createLogger from 'vuex/dist/logger';
 import { updateModel } from 'vuex-bound';
+
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: { foo: '', bar: '' },
   actions: {},
   mutations: { ...updateModel() },
   getters: {},
-  plugins: [
-    process.env.NODE_ENV === 'development' && createLogger({ collapsed: false }),
-  ].filter(Boolean),
+  plugins: [createLogger({ collapsed: false })],
 });
+
+export default store;
 ```
 
 ```html
 <template>
   <div>
-    <input v-model="foo"> {{ $app.foo }} or {{ foo }}
-    <input v-model="bar"> {{ $app.bar }} or {{ bar }}
+    <input v-model="foo"> {{ app$.foo }} or {{ foo }}
+    <input v-model="bar"> {{ app$.bar }} or {{ bar }}
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import { mapModel } from 'vuex-bound';
+
 export default {
   [...]
   computed: {
     // your state
-    $app: () => this.$store.state,
+    app$: () => this.$store.state,
     // you will not need it
     // ...mapState(['foo', 'bar'])
 
-    // your models
+    // your model
     ...mapModel(['foo', 'bar']),
     // equal to
     ...mapModel({
@@ -73,11 +86,11 @@ export default {
     }),
 
     // your getters
-    ...mapGetters(Object.keys(getters)),
+    ...mapGetters(/* ... */),
   },
   methods: {
     // your actions
-    ...mapActions(Object.keys(actions)),
+    ...mapActions(/* ... */),
   },
   [...]
 };
@@ -87,16 +100,17 @@ export default {
 ### Modules
 
 ```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createLogger from 'vuex/dist/logger';
 import { updateModel } from 'vuex-bound';
+
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
     a: {
       namespaced: true,
-      state: { foo: '', bar: '' },
-      actions: {},
-      mutations: { ...updateModel() },
-      getters: {},
       modules: {
         b: {
           namespaced: true,
@@ -104,54 +118,46 @@ const store = new Vuex.Store({
           actions: {},
           mutations: { ...updateModel() },
           getters: {},
-          modules: {
-            c: {
-              namespaced: true,
-              state: { foo: '', bar: '' },
-              actions: {},
-              mutations: { ...updateModel() },
-              getters: {},
-            },
-          },
         },
       },
     },
   },
-  plugins: [
-    process.env.NODE_ENV === 'development' && createLogger({ collapsed: false }),
-  ].filter(Boolean),
+  plugins: [createLogger({ collapsed: false })],
 });
+
+export default store;
 ```
 
 ```html
 <template>
   <div>
-    <input v-model="foo"> {{ $b.foo }} or {{ foo }}
-    <input v-model="bar"> {{ $b.bar }} or {{ bar }}
+    <input v-model="foo"> {{ b$.foo }} or {{ foo }}
+    <input v-model="bar"> {{ b$.bar }} or {{ bar }}
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import { mapModel } from 'vuex-bound';
 
 // you will not need it
 // const { mapState, mapActions, mapGetters } = createNamespacedHelpers('a/b');
 
 // maybe you can do this
-// const namespace = 'a/b';
-// ...mapModel(namespace, ['foo', 'bar']),
-// ...mapGetters(namespace, Object.keys(getters)),
-// ...mapActions(namespace, Object.keys(actions)),
+// const namespaced = 'a/b';
+// ...mapModel(namespaced, ['foo', 'bar']),
+// ...mapGetters(namespaced, /* ... */),
+// ...mapActions(namespaced, /* ... */),
 
 export default {
   [...]
   computed: {
     // your state
-    $b: () => this.$store.state.a.b,
+    b$: () => this.$store.state.a.b,
     // you will not need it
     // ...mapState('a/b', ['foo', 'bar'])
 
-    // your models
+    // your model
     ...mapModel('a/b', ['foo', 'bar']),
     // equal to
     ...mapModel('a/b', {
@@ -160,11 +166,11 @@ export default {
     }),
 
     // your getters
-    ...mapGetters('a/b', Object.keys(getters)),
+    ...mapGetters('a/b', /* ... */),
   },
   methods: {
     // your actions
-    ...mapActions('a/b', Object.keys(actions)),
+    ...mapActions('a/b', /* ... */),
   },
   [...]
 };
