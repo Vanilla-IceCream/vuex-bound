@@ -1,11 +1,11 @@
-export const normalizeMap = (map) => {
-  return Array.isArray(map)
+export const normalizeMap = map => (
+  Array.isArray(map)
     ? map.map(key => ({ key, val: key }))
     : Object.keys(map).map(key => ({ key, val: map[key] }))
-};
+);
 
-export const normalizeNamespace = (func) => {
-  return (namespace, map) => {
+export const normalizeNamespace = func =>
+  (namespace, map) => {
     if (typeof namespace !== 'string') {
       map = namespace;
       namespace = '';
@@ -13,43 +13,30 @@ export const normalizeNamespace = (func) => {
 
     return func(namespace, map);
   };
-};
 
-export const mapModelsToState = normalizeNamespace((namespace, models) => {
+export const mapModel = normalizeNamespace((namespace, models) => {
   const res = {};
 
   normalizeMap(models).forEach(({ key, val }) => {
     res[key] = {
       get() {
-        if (!namespace) {  // for global
-          if (typeof val === 'function') {  // handle objects
-            val(this.$store.state);  // TODO: nested state
-          } else {  // handle arrays
-            return this.$store.state[key];
-          }
-        } else {  // for modules
-          if (typeof val === 'function') {  // handle objects
-            val(this.$store.state);  // TODO: nested state
-          } else {  // handle arrays
-            return namespace.split('/')
-              .reduce((prev, cur) => prev[cur], this.$store.state)[key];
-          }
-        }
+        if (typeof val === 'function') val(this.$store.state);
+
+        if (!namespace) return this.$store.state[key];
+
+        return namespace.split('/')
+          .reduce((prev, cur) => prev[cur], this.$store.state)[key];
       },
       set(value) {
-        if (!namespace) {  // for global
-          this.$store.commit('updateModel', { label: key, value });
-        } else {  // for modules
-          this.$store.commit(`${namespace.split('/').join('/')}/updateModel`, { label: key, value });
-        }
+        const type = !namespace ? 'updateModel' : `${namespace.split('/').join('/')}/updateModel`;
+
+        this.$store.commit(type, { label: key, value });
       },
     };
   });
 
   return res;
 });
-
-export const mapModel = mapModelsToState;
 
 export const updateModel = () => ({
   updateModel(state, { label, value }) {

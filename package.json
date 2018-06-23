@@ -1,6 +1,6 @@
 {
   "name": "vuex-bound",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Vue two-way binding (v-model) for Vuex state and mutations.",
   "main": "dist/vuex-bound.cjs.js",
   "module": "dist/vuex-bound.esm.js",
@@ -16,6 +16,7 @@
     "url": "git+https://github.com/Vanilla-IceCream/vuex-bound.git"
   },
   "keywords": [
+    "Vue",
     "Vuex"
   ],
   "author": "Vanilla IceCream",

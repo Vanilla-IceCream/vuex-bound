@@ -21,7 +21,7 @@ var normalizeNamespace = function normalizeNamespace(func) {
   };
 };
 
-var mapModelsToState = normalizeNamespace(function (namespace, models) {
+var mapModel = normalizeNamespace(function (namespace, models) {
   var res = {};
 
   normalizeMap(models).forEach(function (_ref) {
@@ -30,44 +30,24 @@ var mapModelsToState = normalizeNamespace(function (namespace, models) {
 
     res[key] = {
       get: function get() {
-        if (!namespace) {
-          // for global
-          if (typeof val === 'function') {
-            // handle objects
-            val(this.$store.state); // TODO: nested state
-          } else {
-            // handle arrays
-            return this.$store.state[key];
-          }
-        } else {
-          // for modules
-          if (typeof val === 'function') {
-            // handle objects
-            val(this.$store.state); // TODO: nested state
-          } else {
-            // handle arrays
-            return namespace.split('/').reduce(function (prev, cur) {
-              return prev[cur];
-            }, this.$store.state)[key];
-          }
-        }
+        if (typeof val === 'function') val(this.$store.state);
+
+        if (!namespace) return this.$store.state[key];
+
+        return namespace.split('/').reduce(function (prev, cur) {
+          return prev[cur];
+        }, this.$store.state)[key];
       },
       set: function set(value) {
-        if (!namespace) {
-          // for global
-          this.$store.commit('updateModel', { label: key, value: value });
-        } else {
-          // for modules
-          this.$store.commit(namespace.split('/').join('/') + '/updateModel', { label: key, value: value });
-        }
+        var type = !namespace ? 'updateModel' : namespace.split('/').join('/') + '/updateModel';
+
+        this.$store.commit(type, { label: key, value: value });
       }
     };
   });
 
   return res;
 });
-
-var mapModel = mapModelsToState;
 
 var updateModel = function updateModel() {
   return {
@@ -82,7 +62,6 @@ var updateModel = function updateModel() {
 
 exports.normalizeMap = normalizeMap;
 exports.normalizeNamespace = normalizeNamespace;
-exports.mapModelsToState = mapModelsToState;
 exports.mapModel = mapModel;
 exports.updateModel = updateModel;
 //# sourceMappingURL=vuex-bound.cjs.js.map
