@@ -26,13 +26,19 @@ var mapModel = normalizeNamespace(function (namespace, models) {
 
     res[key] = {
       get: function get() {
-        if (typeof val === 'function') val(this.$store.state);
+        if (!namespace) {
+          var globalState = this.$store.state;
 
-        if (!namespace) return this.$store.state[key];
+          if (typeof val === 'function') val(globalState);
+          return globalState[key];
+        }
 
-        return namespace.split('/').reduce(function (prev, cur) {
+        var moduleState = namespace.split('/').reduce(function (prev, cur) {
           return prev[cur];
-        }, this.$store.state)[key];
+        }, this.$store.state);
+
+        if (typeof val === 'function') val(moduleState);
+        return moduleState[key];
       },
       set: function set(value) {
         var type = !namespace ? 'updateModel' : namespace.split('/').join('/') + '/updateModel';

@@ -20,12 +20,18 @@ export const mapModel = normalizeNamespace((namespace, models) => {
   normalizeMap(models).forEach(({ key, val }) => {
     res[key] = {
       get() {
-        if (typeof val === 'function') val(this.$store.state);
+        if (!namespace) {
+          const globalState = this.$store.state;
 
-        if (!namespace) return this.$store.state[key];
+          if (typeof val === 'function') val(globalState);
+          return globalState[key];
+        }
 
-        return namespace.split('/')
-          .reduce((prev, cur) => prev[cur], this.$store.state)[key];
+        const moduleState = namespace.split('/')
+          .reduce((prev, cur) => prev[cur], this.$store.state);
+
+        if (typeof val === 'function') val(moduleState);
+        return moduleState[key];
       },
       set(value) {
         const type = !namespace ? 'updateModel' : `${namespace.split('/').join('/')}/updateModel`;

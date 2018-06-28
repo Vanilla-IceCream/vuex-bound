@@ -13,7 +13,7 @@ describe('vuex-bound', () => {
   it('should handle mapModel with array for global', () => {
     const Component = {
       template: `
-        <input id="foo" v-model="foo">
+        <input v-model="foo"> {{ foo }}
       `,
       computed: {
         ...mapModel(['foo']),
@@ -36,10 +36,10 @@ describe('vuex-bound', () => {
   it('should handle mapModel wtih object for global', () => {
     const Component = {
       template: `
-        <input id="foo" v-model="myFoo">
+        <input v-model="fooCustom"> {{ fooCustom }}
       `,
       computed: {
-        ...mapModel({ myFoo: state => state.foo }),
+        ...mapModel({ fooCustom: state => state.foo }),
       },
     };
 
@@ -52,14 +52,14 @@ describe('vuex-bound', () => {
 
     expect(store.state.foo).toMatch('foo');
 
-    wrapper.setData({ myFoo: 'bar' });
+    wrapper.setData({ fooCustom: 'bar' });
     expect(store.state.foo).toMatch('bar');
   });
 
   it('should handle mapModel with array for modules', () => {
     const Component = {
       template: `
-        <input id="foo" v-model="foo">
+        <input v-model="foo"> {{ foo }}
       `,
       computed: {
         ...mapModel('a/b', ['foo']),
@@ -92,10 +92,10 @@ describe('vuex-bound', () => {
   it('should handle mapModel with object for modules', () => {
     const Component = {
       template: `
-        <input id="foo" v-model="myFoo">
+        <input v-model="fooCustom"> {{ fooCustom }}
       `,
       computed: {
-        ...mapModel('a/b', { myFoo: state => state.foo }),
+        ...mapModel('a/b', { fooCustom: state => state.foo }),
       },
     };
 
@@ -118,7 +118,7 @@ describe('vuex-bound', () => {
 
     expect(store.state.a.b.foo).toMatch('foo');
 
-    wrapper.setData({ myFoo: 'bar' });
+    wrapper.setData({ fooCustom: 'bar' });
     expect(store.state.a.b.foo).toMatch('bar');
   });
 });
