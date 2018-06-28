@@ -37,7 +37,10 @@ var mapModel = normalizeNamespace(function (namespace, models) {
       set: function set(value) {
         var type = !namespace ? 'updateModel' : namespace.split('/').join('/') + '/updateModel';
 
-        this.$store.commit(type, { label: key, value: value });
+        var valify = String(val);
+        var originState = valify.substring(valify.indexOf('.') + 1, valify.indexOf(';'));
+
+        this.$store.commit(type, { label: originState || key, value: value });
       }
     };
   });

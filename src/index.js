@@ -30,7 +30,10 @@ export const mapModel = normalizeNamespace((namespace, models) => {
       set(value) {
         const type = !namespace ? 'updateModel' : `${namespace.split('/').join('/')}/updateModel`;
 
-        this.$store.commit(type, { label: key, value });
+        const valify = String(val);
+        const originState = valify.substring(valify.indexOf('.') + 1, valify.indexOf(';'));
+
+        this.$store.commit(type, { label: originState || key, value });
       },
     };
   });

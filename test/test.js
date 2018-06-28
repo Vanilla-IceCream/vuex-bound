@@ -36,10 +36,10 @@ describe('vuex-bound', () => {
   it('should handle mapModel wtih object for global', () => {
     const Component = {
       template: `
-        <input id="foo" v-model="foo">
+        <input id="foo" v-model="myFoo">
       `,
       computed: {
-        ...mapModel({ foo: state => state.foo }),
+        ...mapModel({ myFoo: state => state.foo }),
       },
     };
 
@@ -52,7 +52,7 @@ describe('vuex-bound', () => {
 
     expect(store.state.foo).toMatch('foo');
 
-    wrapper.setData({ foo: 'bar' });
+    wrapper.setData({ myFoo: 'bar' });
     expect(store.state.foo).toMatch('bar');
   });
 
@@ -92,10 +92,10 @@ describe('vuex-bound', () => {
   it('should handle mapModel with object for modules', () => {
     const Component = {
       template: `
-        <input id="foo" v-model="foo">
+        <input id="foo" v-model="myFoo">
       `,
       computed: {
-        ...mapModel('a/b', { foo: state => state.foo }),
+        ...mapModel('a/b', { myFoo: state => state.foo }),
       },
     };
 
@@ -118,7 +118,7 @@ describe('vuex-bound', () => {
 
     expect(store.state.a.b.foo).toMatch('foo');
 
-    wrapper.setData({ foo: 'bar' });
+    wrapper.setData({ myFoo: 'bar' });
     expect(store.state.a.b.foo).toMatch('bar');
   });
 });
