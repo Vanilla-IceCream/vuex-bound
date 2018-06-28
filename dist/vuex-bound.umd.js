@@ -35,7 +35,7 @@
           if (!namespace) {
             var globalState = this.$store.state;
 
-            if (typeof val === 'function') val(globalState);
+            if (typeof val === 'function') return val(globalState);
             return globalState[key];
           }
 
@@ -43,7 +43,7 @@
             return prev[cur];
           }, this.$store.state);
 
-          if (typeof val === 'function') val(moduleState);
+          if (typeof val === 'function') return val(moduleState);
           return moduleState[key];
         },
         set: function set(value) {

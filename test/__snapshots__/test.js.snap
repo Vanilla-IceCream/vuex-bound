@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vuex-bound should handle mapModel with array for global 1`] = `
+"<div><input> foo
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel with array for global 2`] = `
+"<div><input> bar
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel with array for modules 1`] = `
+"<div><input> foo
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel with array for modules 2`] = `
+"<div><input> bar
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel with object for modules 1`] = `
+"<div><input> foo
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel with object for modules 2`] = `
+"<div><input> bar
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel wtih object for global 1`] = `
+"<div><input> foo
+        </div>"
+`;
+
+exports[`vuex-bound should handle mapModel wtih object for global 2`] = `
+"<div><input> bar
+        </div>"
+`;

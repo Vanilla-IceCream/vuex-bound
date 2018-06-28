@@ -13,7 +13,9 @@ describe('vuex-bound', () => {
   it('should handle mapModel with array for global', () => {
     const Component = {
       template: `
-        <input v-model="foo"> {{ foo }}
+        <div>
+          <input v-model="foo"> {{ foo }}
+        </div>
       `,
       computed: {
         ...mapModel(['foo']),
@@ -27,16 +29,20 @@ describe('vuex-bound', () => {
 
     const wrapper = shallowMount(Component, { localVue, store });
 
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.foo).toMatch('foo');
 
     wrapper.setData({ foo: 'bar' });
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.foo).toMatch('bar');
   });
 
   it('should handle mapModel wtih object for global', () => {
     const Component = {
       template: `
-        <input v-model="fooCustom"> {{ fooCustom }}
+        <div>
+          <input v-model="fooCustom"> {{ fooCustom }}
+        </div>
       `,
       computed: {
         ...mapModel({ fooCustom: state => state.foo }),
@@ -50,16 +56,20 @@ describe('vuex-bound', () => {
 
     const wrapper = shallowMount(Component, { localVue, store });
 
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.foo).toMatch('foo');
 
     wrapper.setData({ fooCustom: 'bar' });
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.foo).toMatch('bar');
   });
 
   it('should handle mapModel with array for modules', () => {
     const Component = {
       template: `
-        <input v-model="foo"> {{ foo }}
+        <div>
+          <input v-model="foo"> {{ foo }}
+        </div>
       `,
       computed: {
         ...mapModel('a/b', ['foo']),
@@ -83,16 +93,20 @@ describe('vuex-bound', () => {
 
     const wrapper = shallowMount(Component, { localVue, store });
 
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.a.b.foo).toMatch('foo');
 
     wrapper.setData({ foo: 'bar' });
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.a.b.foo).toMatch('bar');
   });
 
   it('should handle mapModel with object for modules', () => {
     const Component = {
       template: `
-        <input v-model="fooCustom"> {{ fooCustom }}
+        <div>
+          <input v-model="fooCustom"> {{ fooCustom }}
+        </div>
       `,
       computed: {
         ...mapModel('a/b', { fooCustom: state => state.foo }),
@@ -116,9 +130,11 @@ describe('vuex-bound', () => {
 
     const wrapper = shallowMount(Component, { localVue, store });
 
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.a.b.foo).toMatch('foo');
 
     wrapper.setData({ fooCustom: 'bar' });
+    expect(wrapper.html()).toMatchSnapshot();
     expect(store.state.a.b.foo).toMatch('bar');
   });
 });

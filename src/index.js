@@ -23,14 +23,14 @@ export const mapModel = normalizeNamespace((namespace, models) => {
         if (!namespace) {
           const globalState = this.$store.state;
 
-          if (typeof val === 'function') val(globalState);
+          if (typeof val === 'function') return val(globalState);
           return globalState[key];
         }
 
         const moduleState = namespace.split('/')
           .reduce((prev, cur) => prev[cur], this.$store.state);
 
-        if (typeof val === 'function') val(moduleState);
+        if (typeof val === 'function') return val(moduleState);
         return moduleState[key];
       },
       set(value) {
