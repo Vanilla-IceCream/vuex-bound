@@ -35,6 +35,7 @@
     // Possible Errors
 
     // Best Practices
+    "no-param-reassign": "off"
 
     // Variables
 

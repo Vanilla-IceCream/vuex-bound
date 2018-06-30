@@ -1,41 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`vuex-bound should handle mapModel with array for global 1`] = `
+exports[`vuex-bound global should handle array 1`] = `
 "<div><input> foo
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel with array for global 2`] = `
+exports[`vuex-bound global should handle array 2`] = `
 "<div><input> bar
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel with array for modules 1`] = `
+exports[`vuex-bound global should handle nested object 1`] = `
+"<div><input> fooBar
+          </div>"
+`;
+
+exports[`vuex-bound global should handle nested object 2`] = `
+"<div><input> newFooBar
+          </div>"
+`;
+
+exports[`vuex-bound global should handle object 1`] = `
 "<div><input> foo
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel with array for modules 2`] = `
+exports[`vuex-bound global should handle object 2`] = `
 "<div><input> bar
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel with object for modules 1`] = `
+exports[`vuex-bound modules should handle array 1`] = `
 "<div><input> foo
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel with object for modules 2`] = `
+exports[`vuex-bound modules should handle array 2`] = `
 "<div><input> bar
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel wtih object for global 1`] = `
+exports[`vuex-bound modules should handle nested object 1`] = `
+"<div><input> fooBar
+          </div>"
+`;
+
+exports[`vuex-bound modules should handle nested object 2`] = `
+"<div><input> newFooBar
+          </div>"
+`;
+
+exports[`vuex-bound modules should handle object 1`] = `
 "<div><input> foo
-        </div>"
+          </div>"
 `;
 
-exports[`vuex-bound should handle mapModel wtih object for global 2`] = `
+exports[`vuex-bound modules should handle object 2`] = `
 "<div><input> bar
-        </div>"
+          </div>"
 `;

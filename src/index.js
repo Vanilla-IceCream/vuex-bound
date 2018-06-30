@@ -49,6 +49,16 @@ export const mapModel = normalizeNamespace((namespace, models) => {
 
 export const updateModel = () => ({
   updateModel(state, { label, value }) {
-    state[label] = value;
+    if (label.includes('.')) {
+      const labelKeys = label.split('.');
+
+      for (let i = 0; i < labelKeys.length - 1; i += 1) {
+        state = state[labelKeys[i]];
+      }
+
+      state[labelKeys[labelKeys.length - 1]] = value;
+    } else {
+      state[label] = value;
+    }
   },
 });

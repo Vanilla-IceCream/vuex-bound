@@ -10,131 +10,199 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('vuex-bound', () => {
-  it('should handle mapModel with array for global', () => {
-    const Component = {
-      template: `
-        <div>
-          <input v-model="foo"> {{ foo }}
-        </div>
-      `,
-      computed: {
-        ...mapModel(['foo']),
-      },
-    };
+  describe('global', () => {
+    it('should handle array', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="foo"> {{ foo }}
+          </div>
+        `,
+        computed: {
+          ...mapModel(['foo']),
+        },
+      };
 
-    const store = new Vuex.Store({
-      state: { foo: 'foo' },
-      mutations: { ...updateModel() },
+      const store = new Vuex.Store({
+        state: { foo: 'foo' },
+        mutations: { ...updateModel() },
+      });
+
+      const wrapper = shallowMount(Component, { localVue, store });
+
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.foo).toMatch('foo');
+
+      wrapper.setData({ foo: 'bar' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.foo).toMatch('bar');
     });
 
-    const wrapper = shallowMount(Component, { localVue, store });
+    it('should handle object', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="fooCustom"> {{ fooCustom }}
+          </div>
+        `,
+        computed: {
+          ...mapModel({ fooCustom: state => state.foo }),
+        },
+      };
 
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.foo).toMatch('foo');
+      const store = new Vuex.Store({
+        state: { foo: 'foo' },
+        mutations: { ...updateModel() },
+      });
 
-    wrapper.setData({ foo: 'bar' });
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.foo).toMatch('bar');
-  });
+      const wrapper = shallowMount(Component, { localVue, store });
 
-  it('should handle mapModel wtih object for global', () => {
-    const Component = {
-      template: `
-        <div>
-          <input v-model="fooCustom"> {{ fooCustom }}
-        </div>
-      `,
-      computed: {
-        ...mapModel({ fooCustom: state => state.foo }),
-      },
-    };
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.foo).toMatch('foo');
 
-    const store = new Vuex.Store({
-      state: { foo: 'foo' },
-      mutations: { ...updateModel() },
+      wrapper.setData({ fooCustom: 'bar' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.foo).toMatch('bar');
     });
 
-    const wrapper = shallowMount(Component, { localVue, store });
+    it('should handle nested object', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="fooBarCustom"> {{ fooBarCustom }}
+          </div>
+        `,
+        computed: {
+          ...mapModel({ fooBarCustom: state => state.foo.bar }),
+        },
+      };
 
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.foo).toMatch('foo');
+      const store = new Vuex.Store({
+        state: { foo: { bar: 'fooBar' } },
+        mutations: { ...updateModel() },
+      });
 
-    wrapper.setData({ fooCustom: 'bar' });
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.foo).toMatch('bar');
+      const wrapper = shallowMount(Component, { localVue, store });
+
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.foo.bar).toMatch('fooBar');
+
+      wrapper.setData({ fooBarCustom: 'newFooBar' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.foo.bar).toMatch('newFooBar');
+    });
   });
 
-  it('should handle mapModel with array for modules', () => {
-    const Component = {
-      template: `
-        <div>
-          <input v-model="foo"> {{ foo }}
-        </div>
-      `,
-      computed: {
-        ...mapModel('a/b', ['foo']),
-      },
-    };
+  describe('modules', () => {
+    it('should handle array', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="foo"> {{ foo }}
+          </div>
+        `,
+        computed: {
+          ...mapModel('a/b', ['foo']),
+        },
+      };
 
-    const store = new Vuex.Store({
-      modules: {
-        a: {
-          namespaced: true,
-          modules: {
-            b: {
-              namespaced: true,
-              state: { foo: 'foo' },
-              mutations: { ...updateModel() },
+      const store = new Vuex.Store({
+        modules: {
+          a: {
+            namespaced: true,
+            modules: {
+              b: {
+                namespaced: true,
+                state: { foo: 'foo' },
+                mutations: { ...updateModel() },
+              },
             },
           },
         },
-      },
+      });
+
+      const wrapper = shallowMount(Component, { localVue, store });
+
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.a.b.foo).toMatch('foo');
+
+      wrapper.setData({ foo: 'bar' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.a.b.foo).toMatch('bar');
     });
 
-    const wrapper = shallowMount(Component, { localVue, store });
+    it('should handle object', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="fooCustom"> {{ fooCustom }}
+          </div>
+        `,
+        computed: {
+          ...mapModel('a/b', { fooCustom: state => state.foo }),
+        },
+      };
 
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.a.b.foo).toMatch('foo');
-
-    wrapper.setData({ foo: 'bar' });
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.a.b.foo).toMatch('bar');
-  });
-
-  it('should handle mapModel with object for modules', () => {
-    const Component = {
-      template: `
-        <div>
-          <input v-model="fooCustom"> {{ fooCustom }}
-        </div>
-      `,
-      computed: {
-        ...mapModel('a/b', { fooCustom: state => state.foo }),
-      },
-    };
-
-    const store = new Vuex.Store({
-      modules: {
-        a: {
-          namespaced: true,
-          modules: {
-            b: {
-              namespaced: true,
-              state: { foo: 'foo' },
-              mutations: { ...updateModel() },
+      const store = new Vuex.Store({
+        modules: {
+          a: {
+            namespaced: true,
+            modules: {
+              b: {
+                namespaced: true,
+                state: { foo: 'foo' },
+                mutations: { ...updateModel() },
+              },
             },
           },
         },
-      },
+      });
+
+      const wrapper = shallowMount(Component, { localVue, store });
+
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.a.b.foo).toMatch('foo');
+
+      wrapper.setData({ fooCustom: 'bar' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.a.b.foo).toMatch('bar');
     });
 
-    const wrapper = shallowMount(Component, { localVue, store });
+    it('should handle nested object', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="fooBarCustom"> {{ fooBarCustom }}
+          </div>
+        `,
+        computed: {
+          ...mapModel('a/b', { fooBarCustom: state => state.foo.bar }),
+        },
+      };
 
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.a.b.foo).toMatch('foo');
+      const store = new Vuex.Store({
+        modules: {
+          a: {
+            namespaced: true,
+            modules: {
+              b: {
+                namespaced: true,
+                state: { foo: { bar: 'fooBar' } },
+                mutations: { ...updateModel() },
+              },
+            },
+          },
+        },
+      });
 
-    wrapper.setData({ fooCustom: 'bar' });
-    expect(wrapper.html()).toMatchSnapshot();
-    expect(store.state.a.b.foo).toMatch('bar');
+      const wrapper = shallowMount(Component, { localVue, store });
+
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.a.b.foo.bar).toMatch('fooBar');
+
+      wrapper.setData({ fooBarCustom: 'newFooBar' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.a.b.foo.bar).toMatch('newFooBar');
+    });
   });
 });

@@ -60,7 +60,17 @@ var updateModel = function updateModel() {
       var label = _ref2.label,
           value = _ref2.value;
 
-      state[label] = value;
+      if (label.includes('.')) {
+        var labelKeys = label.split('.');
+
+        for (var i = 0; i < labelKeys.length - 1; i += 1) {
+          state = state[labelKeys[i]];
+        }
+
+        state[labelKeys[labelKeys.length - 1]] = value;
+      } else {
+        state[label] = value;
+      }
     }
   };
 };

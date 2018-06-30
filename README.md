@@ -24,10 +24,10 @@ import { mapModel, updateModel } from 'vuex-bound';
 
 ```
 // dev
-https://unpkg.com/vuex-bound@1.1.2/dist/vuex-bound.umd.js
+https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.js
 
 // prod
-https://unpkg.com/vuex-bound@1.1.2/dist/vuex-bound.umd.min.js
+https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.min.js
 ```
 
 ```js
@@ -47,7 +47,10 @@ import { updateModel } from 'vuex-bound';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  state: { foo: '', bar: '' },
+  state: {
+    foo: '',
+    bar: { baz: '' },
+  },
   actions: {},
   mutations: { ...updateModel() },
   getters: {},
@@ -60,37 +63,36 @@ export default store;
 ```html
 <template>
   <div>
-    <input v-model="foo"> {{ app$.foo }} or {{ foo }}
-    <input v-model="bar"> {{ app$.bar }} or {{ bar }}
+    <!-- basic -->
+    <input v-model="foo"> {{ foo }}
+
+    <!-- custom name -->
+    <input v-model="fooCustom"> {{ fooCustom }}
+
+    <!-- nested object -->
+    <input v-model="barBaz"> {{ barBaz }}
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
 import { mapModel } from 'vuex-bound';
 
 export default {
   [...]
   computed: {
-    // your state
-    app$: () => this.$store.state,
-    // you will not need it
-    // ...mapState(['foo', 'bar'])
+    // using mapModel can replace mapState
+    // ...mapState(['foo'])
 
     // your model
-    ...mapModel(['foo', 'bar']),
+    ...mapModel(['foo']),
     // equal to
-    ...mapModel({
-      foo: state => state.foo,
-      bar: state => state.bar,
-    }),
+    ...mapModel({ foo: state => state.foo }),
 
-    // your getters
-    ...mapGetters(/* ... */),
-  },
-  methods: {
-    // your actions
-    ...mapActions(/* ... */),
+    // custom name
+    ...mapModel({ fooCustom: state => state.foo }),
+
+    // nested object
+    ...mapModel({ barBaz: state => state.bar.baz }),
   },
   [...]
 };
@@ -114,7 +116,10 @@ const store = new Vuex.Store({
       modules: {
         b: {
           namespaced: true,
-          state: { foo: '', bar: '' },
+          state: {
+            foo: '',
+            bar: { baz: '' },
+          },
           actions: {},
           mutations: { ...updateModel() },
           getters: {},
@@ -131,46 +136,36 @@ export default store;
 ```html
 <template>
   <div>
-    <input v-model="foo"> {{ b$.foo }} or {{ foo }}
-    <input v-model="bar"> {{ b$.bar }} or {{ bar }}
+    <!-- basic -->
+    <input v-model="foo"> {{ foo }}
+
+    <!-- custom name -->
+    <input v-model="fooCustom"> {{ fooCustom }}
+
+    <!-- nested object -->
+    <input v-model="barBaz"> {{ barBaz }}
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
 import { mapModel } from 'vuex-bound';
-
-// you will not need it
-// const { mapState, mapActions, mapGetters } = createNamespacedHelpers('a/b');
-
-// maybe you can do this
-// const namespaced = 'a/b';
-// ...mapModel(namespaced, ['foo', 'bar']),
-// ...mapGetters(namespaced, /* ... */),
-// ...mapActions(namespaced, /* ... */),
 
 export default {
   [...]
   computed: {
-    // your state
-    b$: () => this.$store.state.a.b,
-    // you will not need it
-    // ...mapState('a/b', ['foo', 'bar'])
+    // using mapModel can replace mapState
+    // ...mapState('a/b', ['foo'])
 
     // your model
-    ...mapModel('a/b', ['foo', 'bar']),
+    ...mapModel('a/b', ['foo']),
     // equal to
-    ...mapModel('a/b', {
-      foo: state => state.foo,
-      bar: state => state.bar,
-    }),
+    ...mapModel('a/b', { foo: state => state.foo }),
 
-    // your getters
-    ...mapGetters('a/b', /* ... */),
-  },
-  methods: {
-    // your actions
-    ...mapActions('a/b', /* ... */),
+    // custom name
+    ...mapModel('a/b', { fooCustom: state => state.foo }),
+
+    // nested object
+    ...mapModel('a/b', { barBaz: state => state.bar.baz }),
   },
   [...]
 };
