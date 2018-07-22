@@ -81,7 +81,7 @@ export default {
   [...]
   computed: {
     // using mapModel can replace mapState
-    // ...mapState(['foo'])
+    // ...mapState(['foo']),
 
     // your model
     ...mapModel(['foo']),
@@ -154,7 +154,7 @@ export default {
   [...]
   computed: {
     // using mapModel can replace mapState
-    // ...mapState('a/b', ['foo'])
+    // ...mapState('a/b', ['foo']),
 
     // your model
     ...mapModel('a/b', ['foo']),

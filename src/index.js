@@ -1,4 +1,6 @@
-export const normalizeMap = map => (
+// @flow
+
+export const normalizeMap = (map: string[] | Object) => (
   Array.isArray(map)
     ? map.map(key => ({ key, val: key }))
     : Object.keys(map).map(key => ({ key, val: map[key] }))
