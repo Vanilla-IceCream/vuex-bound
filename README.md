@@ -25,6 +25,8 @@ import { mapModel, updateModel } from 'vuex-bound';
 ```
 // dev
 https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.js
+// or
+https://unpkg.com/vuex-bound
 
 // prod
 https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.min.js
