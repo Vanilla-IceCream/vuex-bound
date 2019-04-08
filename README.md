@@ -13,10 +13,10 @@ $ yarn add vuex-bound
 ```
 
 ```js
-// commonjs
+// for commonjs
 const { mapModel, updateModel } = require('vuex-bound');
 
-// es modules
+// for es modules
 import { mapModel, updateModel } from 'vuex-bound';
 ```
 
@@ -25,11 +25,18 @@ import { mapModel, updateModel } from 'vuex-bound';
 ```
 // dev
 https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.js
-// or
+// or shorten (use the latest version)
 https://unpkg.com/vuex-bound
 
 // prod
 https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.min.js
+```
+
+```html
+<script src="https://unpkg.com/vue" defer></script>
+<script src="https://unpkg.com/vue-router" defer></script>
+<script src="https://unpkg.com/vuex" defer></script>
+<script src="https://unpkg.com/vuex-bound" defer></script>
 ```
 
 ```js
@@ -82,9 +89,6 @@ import { mapModel } from 'vuex-bound';
 export default {
   [...]
   computed: {
-    // using mapModel can replace mapState
-    // ...mapState(['foo']),
-
     // your model
     ...mapModel(['foo']),
     // equal to
@@ -155,9 +159,6 @@ import { mapModel } from 'vuex-bound';
 export default {
   [...]
   computed: {
-    // using mapModel can replace mapState
-    // ...mapState('a/b', ['foo']),
-
     // your model
     ...mapModel('a/b', ['foo']),
     // equal to
