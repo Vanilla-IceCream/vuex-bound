@@ -174,3 +174,13 @@ export default {
 };
 </script>
 ```
+
+## API
+
+### `mapModel`
+
+Type: `mapModel(namespace?: string, map: Array<string> | Object<function>): Object`
+
+### `updateModel`
+
+Type: `updateModel(): Object`
