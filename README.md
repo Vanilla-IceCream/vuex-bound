@@ -24,12 +24,12 @@ import { mapModel, updateModel } from 'vuex-bound';
 
 ```
 // dev
-https://unpkg.com/vuex-bound@1.2.1/dist/vuex-bound.umd.js
+https://unpkg.com/vuex-bound@1.2.2/dist/vuex-bound.umd.js
 // or shorten (use the latest version)
 https://unpkg.com/vuex-bound
 
 // prod
-https://unpkg.com/vuex-bound@1.2.1/dist/vuex-bound.umd.min.js
+https://unpkg.com/vuex-bound@1.2.2/dist/vuex-bound.umd.min.js
 ```
 
 ```html

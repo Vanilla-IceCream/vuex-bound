@@ -65,7 +65,22 @@ var updateModel = function updateModel() {
           value = _ref2.value;
 
       if (label.includes('.')) {
-        var labelKeys = label.split('.');
+        var labelKeys = label.split('.').map(function (lk) {
+          var arr = [];
+
+          if (/\[\d\]/g.test(lk)) {
+            var lkString = lk.substring(lk.length - 3, -1);
+            var lkIndex = lk.slice(-2, -1);
+
+            arr.push(lkString, lkIndex);
+          } else {
+            arr.push(lk);
+          }
+
+          return arr;
+        }).reduce(function (acc, cur) {
+          return acc.concat(cur);
+        }, []);
 
         for (var i = 0; i < labelKeys.length - 1; i += 1) {
           state = state[labelKeys[i]];

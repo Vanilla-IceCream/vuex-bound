@@ -1,10 +1,13 @@
 {
   "name": "vuex-bound",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Vue two-way binding (v-model) for Vuex state and mutations.",
   "main": "dist/vuex-bound.cjs.js",
   "module": "dist/vuex-bound.esm.js",
   "browser": "dist/vuex-bound.umd.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "rollup -c",
     "test": "jest --coverage",
