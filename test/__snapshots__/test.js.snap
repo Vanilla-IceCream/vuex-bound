@@ -20,6 +20,16 @@ exports[`vuex-bound global should handle nested object 2`] = `
           </div>"
 `;
 
+exports[`vuex-bound global should handle nested object with array 1`] = `
+"<div><input> 3
+          </div>"
+`;
+
+exports[`vuex-bound global should handle nested object with array 2`] = `
+"<div><input> 4
+          </div>"
+`;
+
 exports[`vuex-bound global should handle object 1`] = `
 "<div><input> foo
           </div>"

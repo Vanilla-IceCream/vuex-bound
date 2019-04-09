@@ -91,6 +91,37 @@ describe('vuex-bound', () => {
       expect(wrapper.html()).toMatchSnapshot();
       expect(store.state.foo.bar).toMatch('newFooBar');
     });
+
+    it('should handle nested object with array', () => {
+      const Component = {
+        template: `
+          <div>
+            <input v-model="mongo"> {{ mongo }}
+          </div>
+        `,
+        computed: {
+          ...mapModel({ mongo: state => state.db[0].mongo }),
+        },
+      };
+
+      const store = new Vuex.Store({
+        state: {
+          db: [
+            { mongo: '3' },
+          ],
+        },
+        mutations: { ...updateModel() },
+      });
+
+      const wrapper = shallowMount(Component, { localVue, store });
+
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.db[0].mongo).toMatch('3');
+
+      wrapper.setData({ mongo: '4' });
+      expect(wrapper.html()).toMatchSnapshot();
+      expect(store.state.db[0].mongo).toMatch('4');
+    });
   });
 
   describe('modules', () => {

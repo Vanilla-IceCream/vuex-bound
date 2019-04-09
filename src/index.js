@@ -52,7 +52,22 @@ export const mapModel = normalizeNamespace((namespace, models) => {
 export const updateModel = () => ({
   updateModel(state, { label, value }) {
     if (label.includes('.')) {
-      const labelKeys = label.split('.');
+      const labelKeys = label.split('.')
+        .map((lk) => {
+          const arr = [];
+
+          if (/\[\d\]/g.test(lk)) {
+            const lkString = lk.substring(lk.length - 3, -1);
+            const lkIndex = lk.slice(-2, -1);
+
+            arr.push(lkString, lkIndex);
+          } else {
+            arr.push(lk);
+          }
+
+          return arr;
+        })
+        .reduce((acc, cur) => acc.concat(cur), []);
 
       for (let i = 0; i < labelKeys.length - 1; i += 1) {
         state = state[labelKeys[i]];

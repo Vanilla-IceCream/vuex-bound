@@ -24,12 +24,12 @@ import { mapModel, updateModel } from 'vuex-bound';
 
 ```
 // dev
-https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.js
+https://unpkg.com/vuex-bound@1.2.1/dist/vuex-bound.umd.js
 // or shorten (use the latest version)
 https://unpkg.com/vuex-bound
 
 // prod
-https://unpkg.com/vuex-bound@1.2.0/dist/vuex-bound.umd.min.js
+https://unpkg.com/vuex-bound@1.2.1/dist/vuex-bound.umd.min.js
 ```
 
 ```html
@@ -59,6 +59,9 @@ const store = new Vuex.Store({
   state: {
     foo: '',
     bar: { baz: '' },
+    db: [
+      { mongo: '3' },
+    ],
   },
   actions: {},
   mutations: { ...updateModel() },
@@ -80,6 +83,9 @@ export default store;
 
     <!-- nested object -->
     <input v-model="barBaz"> {{ barBaz }}
+
+    <!-- nested object with array -->
+    <input v-model="mongo"> {{ mongo }}
   </div>
 </template>
 
@@ -99,6 +105,9 @@ export default {
 
     // nested object
     ...mapModel({ barBaz: state => state.bar.baz }),
+
+    // nested object with array
+    ...mapModel({ mongo: state => state.db[0].mongo });
   },
   [...]
 };
@@ -125,6 +134,9 @@ const store = new Vuex.Store({
           state: {
             foo: '',
             bar: { baz: '' },
+            db: [
+              { mongo: '3' },
+            ],
           },
           actions: {},
           mutations: { ...updateModel() },
@@ -150,6 +162,9 @@ export default store;
 
     <!-- nested object -->
     <input v-model="barBaz"> {{ barBaz }}
+
+    <!-- nested object with array -->
+    <input v-model="mongo"> {{ mongo }}
   </div>
 </template>
 
@@ -169,6 +184,8 @@ export default {
 
     // nested object
     ...mapModel('a/b', { barBaz: state => state.bar.baz }),
+
+    ...mapModel('a/b', { mongo: state => state.db[0].mongo });
   },
   [...]
 };
