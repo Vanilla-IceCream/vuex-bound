@@ -5,8 +5,11 @@
   "main": "dist/vuex-bound.cjs.js",
   "module": "dist/vuex-bound.esm.js",
   "browser": "dist/vuex-bound.umd.js",
+  "types": "types/index.d.ts",
   "files": [
-    "dist"
+    "src",
+    "dist",
+    "types"
   ],
   "scripts": {
     "build": "rollup -c",
