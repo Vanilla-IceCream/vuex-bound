@@ -9,6 +9,8 @@ Vue two-way binding (v-model) for Vuex state and mutations.
 ```bash
 $ npm i vuex-bound -S
 # or
+$ pnpm i vuex-bound -S
+# or
 $ yarn add vuex-bound
 ```
 
@@ -107,7 +109,7 @@ export default {
     ...mapModel({ barBaz: state => state.bar.baz }),
 
     // nested object with array
-    ...mapModel({ mongo: state => state.db[0].mongo });
+    ...mapModel({ mongo: state => state.db[0].mongo }),
   },
   [...]
 };
@@ -185,7 +187,8 @@ export default {
     // nested object
     ...mapModel('a/b', { barBaz: state => state.bar.baz }),
 
-    ...mapModel('a/b', { mongo: state => state.db[0].mongo });
+    // nested object with array
+    ...mapModel('a/b', { mongo: state => state.db[0].mongo }),
   },
   [...]
 };
