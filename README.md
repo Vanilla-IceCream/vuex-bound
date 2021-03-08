@@ -4,8 +4,6 @@ Vue two-way binding (v-model) for Vuex state and mutations.
 
 ## Installation and Usage
 
-### CJS or ESM
-
 ```bash
 $ npm i vuex-bound -S
 # or
@@ -22,34 +20,14 @@ const { mapModel, updateModel } = require('vuex-bound');
 import { mapModel, updateModel } from 'vuex-bound';
 ```
 
-### UMD
-
-```
-// dev
-https://unpkg.com/vuex-bound@1.2.2/dist/vuex-bound.umd.js
-// or shorten (use the latest version)
-https://unpkg.com/vuex-bound
-
-// prod
-https://unpkg.com/vuex-bound@1.2.2/dist/vuex-bound.umd.min.js
-```
-
-```html
-<script src="https://unpkg.com/vue" defer></script>
-<script src="https://unpkg.com/vue-router" defer></script>
-<script src="https://unpkg.com/vuex" defer></script>
-<script src="https://unpkg.com/vuex-bound" defer></script>
-```
-
-```js
-const { mapModel, updateModel } = VuexBound;
-```
-
 ## Getting Started
 
 ### Global
 
 ```js
+/**
+ * Vuex 3
+ */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
@@ -65,13 +43,33 @@ const store = new Vuex.Store({
       { mongo: '3' },
     ],
   },
-  actions: {},
-  mutations: { ...updateModel() },
   getters: {},
+  mutations: { ...updateModel() },
+  actions: {},
   plugins: [createLogger({ collapsed: false })],
 });
 
 export default store;
+
+/**
+ * Vuex 4
+ */
+import { createStore, createLogger } from 'vuex';
+import { updateModel } from 'vuex-bound';
+
+export const store = createStore({
+  state: {
+    foo: '',
+    bar: { baz: '' },
+    db: [
+      { mongo: '3' },
+    ],
+  },
+  getters: {},
+  mutations: { ...updateModel() },
+  actions: {},
+  plugins: [createLogger({ collapsed: false })],
+});
 ```
 
 ```html
@@ -95,23 +93,23 @@ export default store;
 import { mapModel } from 'vuex-bound';
 
 export default {
-  [...]
   computed: {
     // your model
     ...mapModel(['foo']),
     // equal to
     ...mapModel({ foo: state => state.foo }),
 
-    // custom name
-    ...mapModel({ fooCustom: state => state.foo }),
+    ...mapModel({
+      // custom name
+      fooCustom: state => state.foo,
 
-    // nested object
-    ...mapModel({ barBaz: state => state.bar.baz }),
+      // nested object
+      barBaz: state => state.bar.baz,
 
-    // nested object with array
-    ...mapModel({ mongo: state => state.db[0].mongo }),
+      // nested object with array
+      mongo: state => state.db[0].mongo,
+    }),
   },
-  [...]
 };
 </script>
 ```
@@ -119,6 +117,9 @@ export default {
 ### Modules
 
 ```js
+/**
+ * Vuex 3
+ */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
@@ -151,6 +152,36 @@ const store = new Vuex.Store({
 });
 
 export default store;
+
+/**
+ * Vuex 4
+ */
+import { createStore, createLogger } from 'vuex';
+import { updateModel } from 'vuex-bound';
+
+export const store = createStore({
+  modules: {
+    a: {
+      namespaced: true,
+      modules: {
+        b: {
+          namespaced: true,
+          state: {
+            foo: '',
+            bar: { baz: '' },
+            db: [
+              { mongo: '3' },
+            ],
+          },
+          actions: {},
+          mutations: { ...updateModel() },
+          getters: {},
+        },
+      },
+    },
+  },
+  plugins: [createLogger({ collapsed: false })],
+});
 ```
 
 ```html
@@ -174,23 +205,23 @@ export default store;
 import { mapModel } from 'vuex-bound';
 
 export default {
-  [...]
   computed: {
     // your model
     ...mapModel('a/b', ['foo']),
     // equal to
     ...mapModel('a/b', { foo: state => state.foo }),
 
-    // custom name
-    ...mapModel('a/b', { fooCustom: state => state.foo }),
+    ...mapModel('a/b', {
+      // custom name
+      fooCustom: state => state.foo,
 
-    // nested object
-    ...mapModel('a/b', { barBaz: state => state.bar.baz }),
+      // nested object
+      barBaz: state => state.bar.baz,
 
-    // nested object with array
-    ...mapModel('a/b', { mongo: state => state.db[0].mongo }),
+      // nested object with array
+      mongo: state => state.db[0].mongo,
+    }),
   },
-  [...]
 };
 </script>
 ```

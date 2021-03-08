@@ -39,7 +39,11 @@ export const mapModel = normalizeNamespace((namespace, models) => {
         const type = !namespace ? 'updateModel' : `${namespace.split('/').join('/')}/updateModel`;
 
         const valify = String(val);
-        const originState = valify.substring(valify.indexOf('.') + 1, valify.indexOf(';'));
+
+        const originState = valify.substring(
+          valify.indexOf('state.') + 6,
+          valify.indexOf(';') === -1 ? undefined : valify.indexOf(';'),
+        );
 
         this.$store.commit(type, { label: originState || key, value });
       },
