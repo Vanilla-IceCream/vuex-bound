@@ -40,10 +40,16 @@ export const mapModel = normalizeNamespace((namespace, models) => {
 
         const valify = String(val);
 
-        const originState = valify.substring(
-          valify.indexOf('state.') + 6,
-          valify.indexOf(';') === -1 ? undefined : valify.indexOf(';'),
-        );
+        let originState;
+
+        if (valify.startsWith('state.')) {
+          originState = valify.substring(
+            valify.indexOf('state.') + 6,
+            valify.indexOf(';') === -1 ? undefined : valify.indexOf(';'),
+          );
+        } else {
+          originState = valify.substring(valify.indexOf('.') + 1, valify.indexOf(';'));
+        }
 
         this.$store.commit(type, { label: originState || key, value });
       },

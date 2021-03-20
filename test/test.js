@@ -129,11 +129,11 @@ describe('vuex-bound', () => {
       const Component = {
         template: `
           <div>
-            <input v-model="foo"> {{ foo }}
+            <input v-model="fooBarBaz"> {{ fooBarBaz }}
           </div>
         `,
         computed: {
-          ...mapModel('a/b', ['foo']),
+          ...mapModel('a/b', ['fooBarBaz']),
         },
       };
 
@@ -144,7 +144,7 @@ describe('vuex-bound', () => {
             modules: {
               b: {
                 namespaced: true,
-                state: { foo: 'foo' },
+                state: { fooBarBaz: 'foo' },
                 mutations: { ...updateModel() },
               },
             },
@@ -155,11 +155,11 @@ describe('vuex-bound', () => {
       const wrapper = shallowMount(Component, { localVue, store });
 
       expect(wrapper.html()).toMatchSnapshot();
-      expect(store.state.a.b.foo).toMatch('foo');
+      expect(store.state.a.b.fooBarBaz).toMatch('foo');
 
-      wrapper.setData({ foo: 'bar' });
+      wrapper.setData({ fooBarBaz: 'bar' });
       expect(wrapper.html()).toMatchSnapshot();
-      expect(store.state.a.b.foo).toMatch('bar');
+      expect(store.state.a.b.fooBarBaz).toMatch('bar');
     });
 
     it('should handle object', () => {
