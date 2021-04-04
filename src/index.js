@@ -38,7 +38,7 @@ export const mapModel = normalizeNamespace((namespace, models) => {
       set(value) {
         const type = !namespace ? 'updateModel' : `${namespace.split('/').join('/')}/updateModel`;
 
-        let originState;
+        let originState = val;
 
         if (typeof val === 'function') {
           const valify = String(val);
@@ -47,11 +47,9 @@ export const mapModel = normalizeNamespace((namespace, models) => {
             valify.indexOf('state.') + 6,
             valify.indexOf(';') === -1 ? undefined : valify.indexOf(';'),
           );
-        } else {
-          originState = val.substring(val.indexOf('.') + 1, val.indexOf(';'));
         }
 
-        this.$store.commit(type, { label: originState || key, value });
+        this.$store.commit(type, { label: originState, value });
       },
     };
   });

@@ -114,6 +114,10 @@ export default {
 </script>
 ```
 
+:warning: WARNING
+
+Frankly, `state` is static, you cannot use [destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) and rename it because it will not be able to update the value.
+
 ### Modules
 
 ```js
