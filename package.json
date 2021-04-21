@@ -21,9 +21,10 @@
     "url": "git+https://github.com/Vanilla-IceCream/vuex-bound.git"
   },
   "keywords": [
-    "Vue",
-    "Vuex",
-    "v-model"
+    "vue",
+    "vuex",
+    "v-model",
+    "two-way binding"
   ],
   "author": "Vanilla IceCream",
   "license": "MIT",
